@@ -3,22 +3,21 @@ import {TrashIcon} from '@heroicons/react/outline';
 import {InformationCircleIcon} from '@heroicons/react/solid';
 import axios from 'axios'
 
-const TaskItem = ({taskObj, id, deleteFunc}) => {
+const TaskItem = ({taskObj, id, deleteFunc, showEditFormTrue}) => {
     const [showTaskDrawer, setShowTaskDrawer] = useState(false);
 
     const toggleShowTaskDrawer = () => {
         setShowTaskDrawer(!showTaskDrawer);
     };
-
-    return <div
-        className={`mx-6 my-2 shadow-md hover:translate-y-0.5 rounded-md flex-col`}>
+    console.log(taskObj);
+    return <>
         <div className={`flex`}>
             <div className={`w-full p-4 flex-col`}>
                 <p className={`text-xl font-bold`}>
-                    {taskObj.todo}
+                    {taskObj?.todo}
                 </p>
                 <p>
-                    {taskObj.list} - {taskObj.dueDate}
+                    {taskObj?.list} - {taskObj?.dueDate}
                 </p>
             </div>
             <div className={`w-[100px] flex justify-center items-center`}>
@@ -41,12 +40,13 @@ const TaskItem = ({taskObj, id, deleteFunc}) => {
                 </button>
                 <button
                     className={`bg-blue-600 text-white m-4 p-2 rounded-md`}
+                    onClick={showEditFormTrue}
                 >
                     Edit
                 </button>
             </div> : null}
 
-    </div>
+    </>
 
 };
 
