@@ -30,7 +30,6 @@ const App = () => {
     }
 
     const handleSubmit = async (e) => {
-
         const task = e.target[0].value;
         const dueDate = e.target[1].value;
 
@@ -41,27 +40,6 @@ const App = () => {
         }
     };
 
-    // const handleTaskDescriptionChange = (e, id, tasks) => {
-    //     console.log(e.target)
-    //     // const newValue = e.target[0].value;
-    //     // console.log(newValue);
-    //     // //make copy of tasks
-    //     // const tasksCopy = tasks;
-    //     // console.log(tasksCopy);
-    //     // //get index
-    //     // const editIndex = tasksCopy.findIndex(task => id === task._id);
-    //     // console.log(editIndex);
-    //     // //update tasksCopy
-    //     // tasksCopy[editIndex].todo = newValue;
-    //     // console.log(tasksCopy);
-    //     // //set tasks state to updated copy
-    //     // setTasks(tasksCopy);
-    //     // if save send to server and refresh (this goes in handleSubmit
-    //
-    //     // if cancel get tasks from server
-    //
-    // }
-
     return <>
         <h1 className={`text-3xl`}>Array of Zero [0]</h1>
         <ul className={`my-16`}>
@@ -70,12 +48,6 @@ const App = () => {
                     key={taskObj._id}
 
                 >
-                    {/*<TaskCard id={taskObj._id}*/}
-                    {/*          taskObj={taskObj}*/}
-                    {/*          deleteFunc={handleDelete}*/}
-                    {/*          submitFunc={handleSubmit}*/}
-                    {/*          taskDescriptionChangeFunc={handleTaskDescriptionChange}*/}
-                    {/*/>*/}
                     <TaskCard>
                         <TaskItem
                             taskObj={taskObj}
