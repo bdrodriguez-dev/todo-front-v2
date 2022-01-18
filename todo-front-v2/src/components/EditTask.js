@@ -14,7 +14,7 @@ const EditTask = (
     const [taskDueDate, setTaskDueDate] = useState(taskObj.dueDate);
 
     return <form
-        className={`w-full p-4 flex justify-between bg-green-200`}
+        className={`w-full p-4 flex-col justify-between bg-green-200`}
         onSubmit={async e => {
             // e.preventDefault();
             const task = e.target[0].value;
@@ -28,7 +28,7 @@ const EditTask = (
         }}
     >
         {/* Inputs */}
-        <div className={'flex flex-col w-4/5'}>
+        <div className={'flex flex-col'}>
             <input type={`text`}
                    className={`text-xl font-bold p-2 my-2 rounded-md border-2 border-blue-300 focus:outline-0`}
                    autoFocus
@@ -46,13 +46,19 @@ const EditTask = (
             />
         </div>
         {/* Buttons */}
-        <div className={`w-[100px] flex flex-col justify-center items-center `}>
+        <div className={`flex items-center justify-center`}>
             <button type={`submit`}
-                    className={`border-2 border-blue-300 bg-blue-600 text-white my-4 mx-4 p-2 rounded-md`}>
+                    className={`bg-blue-600 text-white rounded-md px-2 py-1 mx-2`}>
                 Save
             </button>
-            <button type={`button`} className={`p-2`} onClick={hideEditForm}>
-                <XCircleIcon className={`h-10 w-10 my-4 text-red-600`}/>
+            <button type={`button`}
+                    className={`bg-red-600 text-white rounded-md px-2 py-1 mx-2`}>
+                Delete
+            </button>
+            <button type={`button`}
+                    className={`bg-slate-500 text-white rounded-md px-2 py-1 mx-2`}
+                    onClick={hideEditForm}>
+                Cancel
             </button>
         </div>
     </form>

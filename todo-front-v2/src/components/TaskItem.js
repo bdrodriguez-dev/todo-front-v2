@@ -4,19 +4,31 @@ import {InformationCircleIcon} from '@heroicons/react/solid';
 import axios from 'axios'
 import EditTask from './EditTask';
 
-const TaskItem = ({taskObj, deleteFunc, showEditFormTrue, onDescriptionChange, tasks, setTasks, editInputValue}) => {
+const TaskItem = ({
+                      taskObj,
+                      deleteFunc,
+                      showEditFormTrue,
+                      onDescriptionChange,
+                      tasks,
+                      setTasks,
+                      editInputValue,
+                      id,
+                      toggleEditableTaskItems,
+                      showEditForm,
+                      hideEditForm
+                  }) => {
     const [showTaskDrawer, setShowTaskDrawer] = useState(false);
-    const [showEditForm, setShowEditForm] = useState(false);
+    // const [showEditForm, setShowEditForm] = useState(false);
 
     const toggleShowTaskDrawer = () => {
         setShowTaskDrawer(!showTaskDrawer);
     };
-
-    return <>
+    console.log(showEditForm);
+    return <div id={id}>
         {showEditForm ?
             <EditTask
                 taskObj={taskObj}
-                hideEditForm={() => setShowEditForm(false)}
+                hideEditForm={hideEditForm}
                 onDescriptionChange={onDescriptionChange}
                 tasks={tasks}
                 setTasks={setTasks}
@@ -24,7 +36,9 @@ const TaskItem = ({taskObj, deleteFunc, showEditFormTrue, onDescriptionChange, t
             />
             :
 
-            <div className={`flex`}>
+            <div className={`flex`} onClick={() => {
+                toggleEditableTaskItems(id);
+            }}>
                 <div className={`w-full p-4 flex-col`}>
                     <p className={`text-xl font-bold`}>
                         {taskObj?.todo}
@@ -33,16 +47,9 @@ const TaskItem = ({taskObj, deleteFunc, showEditFormTrue, onDescriptionChange, t
                         {taskObj?.list} - {taskObj?.dueDate}
                     </p>
                 </div>
-                <div className={`w-[100px] flex justify-center items-center`}>
-                    <button onClick={toggleShowTaskDrawer}
-                            className={`h-9 w-9 flex justify-center items-center`}>
-                        <InformationCircleIcon className={`h-9 w-9 text-blue-500`}/>
-                    </button>
-                </div>
             </div>
         }
-
-    </>
+    </div>
 
 };
 
