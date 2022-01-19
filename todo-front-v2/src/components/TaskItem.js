@@ -1,4 +1,4 @@
-import {useState} from "react";
+import {useEffect, useState} from "react";
 import {TrashIcon} from '@heroicons/react/outline';
 import {InformationCircleIcon} from '@heroicons/react/solid';
 import axios from 'axios'
@@ -14,18 +14,21 @@ const TaskItem = ({
                       editInputValue,
                       id,
                       toggleEditableTaskItems,
-                      showEditForm,
+                      showEditFormBool,
                       hideEditForm
                   }) => {
     const [showTaskDrawer, setShowTaskDrawer] = useState(false);
     // const [showEditForm, setShowEditForm] = useState(false);
 
+    // useEffect(() => {
+    //     setShowEditForm(showEditFormBool)
+    // }, [showEditFormBool])
+
     const toggleShowTaskDrawer = () => {
         setShowTaskDrawer(!showTaskDrawer);
     };
-    console.log(showEditForm);
     return <div id={id}>
-        {showEditForm ?
+        {showEditFormBool ?
             <EditTask
                 taskObj={taskObj}
                 hideEditForm={hideEditForm}
@@ -35,7 +38,6 @@ const TaskItem = ({
                 editInputValue={editInputValue}
             />
             :
-
             <div className={`flex`} onClick={() => {
                 toggleEditableTaskItems(id);
             }}>
