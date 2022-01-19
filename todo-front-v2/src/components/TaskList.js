@@ -30,8 +30,17 @@ const TaskList = ({
    * Functions
    * */
 
+  const hideEditForm = (id) => {
+    const showEditFormArrCopy = [...showEditFormArr];
+    const i = showEditFormArrCopy.findIndex((showEditFormObj) => {
+      return showEditFormObj.id === id;
+    });
+    showEditFormArrCopy[i].showEditForm = false;
+    setShowEditFormArr(showEditFormArrCopy);
+  }
+
   const toggleEditableTaskItems = (id) => {
-    const showEditFormArrCopy = showEditFormArr;
+    const showEditFormArrCopy = [...showEditFormArr];
     showEditFormArrCopy.forEach((showEditFormObj) => {
       if (showEditFormObj.id === id) {
         showEditFormObj.showEditForm = true;
@@ -40,7 +49,7 @@ const TaskList = ({
         showEditFormObj.showEditForm = false;
       }
     });
-    setShowEditFormArr([...showEditFormArrCopy]);
+    setShowEditFormArr(showEditFormArrCopy);
   };
 
   return (
@@ -57,7 +66,8 @@ const TaskList = ({
                 <TaskItem
                   id={taskObj._id}
                   taskObj={taskObj}
-                  deleteFunc={handleDelete}
+                  handleDelete={handleDelete}
+                  hideEditForm={hideEditForm}
                   tasks={tasks}
                   setTasks={setTasks}
                   editInputValue={() => {
@@ -83,7 +93,7 @@ const TaskList = ({
             hideCreateForm={() => {
               setShowTaskCreateForm(false);
             }}
-            submitFunc={handleSubmit}
+            handleSubmit={handleSubmit}
           />
         </TaskCard>
       ) : null}

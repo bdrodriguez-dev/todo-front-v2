@@ -8,10 +8,12 @@ import EditTask from "./components/EditTask";
 import TaskList from "./components/TaskList";
 
 const App = () => {
+  /*
+   * Hooks
+   * */
   const [showTaskCreateForm, setShowTaskCreateForm] = useState(false);
   const [tasks, setTasks] = useState([]);
   const [deleteFlag, setDeleteFlag] = useState(false);
-  // const [showEditFormArr, setShowEditFormArr] = useState([]);
 
   // Get tasks from db and update state
   useEffect(() => {
@@ -26,6 +28,9 @@ const App = () => {
     getTasks();
   }, [deleteFlag]);
 
+  /*
+   * Functions
+   * */
   const handleDelete = async (id) => {
     const deletedTodo = await axios.delete(`http://localhost:8000/todos/${id}`);
     setDeleteFlag(!deleteFlag);

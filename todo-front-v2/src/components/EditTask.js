@@ -6,8 +6,10 @@ import {useState} from "react";
 const EditTask = (
     {
         taskObj,
+        handleDelete,
         submitFunc,
         hideEditForm,
+        id
     }) => {
 
     const [taskDescription, setTaskDescription] = useState(taskObj.todo);
@@ -52,12 +54,13 @@ const EditTask = (
                 Save
             </button>
             <button type={`button`}
-                    className={`bg-red-600 text-white rounded-md px-2 py-1 mx-2`}>
+                    className={`bg-red-600 text-white rounded-md px-2 py-1 mx-2`}
+                    onClick={() => handleDelete(id)}>
                 Delete
             </button>
             <button type={`button`}
                     className={`bg-slate-500 text-white rounded-md px-2 py-1 mx-2`}
-                    onClick={hideEditForm}>
+                    onClick={() => hideEditForm(id)}>
                 Cancel
             </button>
         </div>
