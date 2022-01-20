@@ -15,6 +15,7 @@ const TaskItem = ({
   toggleEditableTaskItems,
   showEditFormBool,
   hideEditForm,
+  handleEditSubmit,
 }) => {
   return (
     <div id={id}>
@@ -28,6 +29,7 @@ const TaskItem = ({
           setTasks={setTasks}
           editInputValue={editInputValue}
           handleDelete={handleDelete}
+          handleEditSubmit={handleEditSubmit}
         />
       ) : (
         <div

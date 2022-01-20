@@ -28,47 +28,16 @@ const App = () => {
     getTasks();
   }, [deleteFlag]);
 
-  /*
-   * Functions
-   * */
-  const handleDelete = async (id) => {
-    const deletedTodo = await axios.delete(`http://localhost:8000/todos/${id}`);
-    setDeleteFlag(!deleteFlag);
-  };
-
-  const handleSubmit = async (e) => {
-    const task = e.target[0].value;
-    const dueDate = e.target[1].value;
-
-    try {
-      await axios.post(
-        `http://localhost:8000/todos?todo=${task}&dueDate=${dueDate}`
-      );
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
-  // const hideEditForm = (id) => {
-  //     showEditFormArr.forEach((showEditFormObj, i) => {
-  //         if (showEditFormObj._id === id) {
-  //             const showEditFormArrCopy = showEditFormArr;
-  //             showEditFormArrCopy[i].showEditForm = false;
-  //             setShowEditFormArr(showEditFormArrCopy);
-  //         }
-  //     })
-  // };
-
   return (
     <>
       <h1 className={`text-3xl`}>Array of Zero [0]</h1>
       <TaskList
         tasks={tasks}
-        handleDelete={handleDelete}
         setTasks={setTasks}
         showTaskCreateForm={showTaskCreateForm}
         setShowTaskCreateForm={setShowTaskCreateForm}
-        handleSubmit={handleSubmit}
+        deleteFlag={deleteFlag}
+        setDeleteFlag={setDeleteFlag}
         // showEditFormArr={showEditFormArr}
         // toggleEditableTaskItems={toggleEditableTaskItems}
         // hideEditForm={hideEditForm}
