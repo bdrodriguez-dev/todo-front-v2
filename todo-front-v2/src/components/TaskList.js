@@ -37,12 +37,18 @@ const TaskList = ({
   };
 
   const handleCreateSubmit = async (e) => {
+    // e.preventDefault();
     const task = e.target[0].value;
     const dueDate = e.target[1].value;
 
+    let dueDateQueryString = `&dueDate=${dueDate}`;
+    if (!dueDate) {
+      dueDateQueryString = '';
+    }
+
     try {
       await axios.post(
-        `http://localhost:8000/todos?todo=${task}&dueDate=${dueDate}`
+        `http://localhost:8000/todos?todo=${task}${dueDateQueryString}`
       );
     } catch (e) {
       console.log(e);
@@ -51,7 +57,7 @@ const TaskList = ({
 
   const handleEditSubmit = async (e, id) => {
       const task = e.target[0].value;
-      const dueDate = e.target[1].value;
+      let dueDate = e.target[1].value;
       console.log(task, dueDate);
       try {
         const updatedTask = await axios.put(`http://localhost:8000/todos/${id}?todo=${task}&dueDate=${dueDate}`)
@@ -82,6 +88,12 @@ const TaskList = ({
     setShowEditFormArr(showEditFormArrCopy);
   };
 
+  const toProperCase = (list) => {
+    const first = list.slice(0, 1).toUpperCase();
+    const rest = list.slice(1);
+    return first + rest;
+  };
+
   return (
     <ul className={`my-16`}>
       {showEditFormArr.length === tasks.length ? (
@@ -110,6 +122,7 @@ const TaskList = ({
                   showEditFormBool={showEditFormBool}
                   toggleEditableTaskItems={toggleEditableTaskItems}
                   handleEditSubmit={handleEditSubmit}
+                  toProperCase={toProperCase}
                 />
               </TaskCard>
             </li>
@@ -125,6 +138,7 @@ const TaskList = ({
               setShowTaskCreateForm(false);
             }}
             handleCreateSubmit={handleCreateSubmit}
+            toProperCase={toProperCase}
           />
         </TaskCard>
       ) : null}

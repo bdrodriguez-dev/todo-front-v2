@@ -6,7 +6,6 @@ import Button from "./ui/Button";
 const EditTask = ({
   taskObj,
   handleDelete,
-  submitFunc,
   hideEditForm,
   id,
   handleEditSubmit,
@@ -21,7 +20,7 @@ const EditTask = ({
       <div className={"flex flex-col"}>
         <input
           type={`text`}
-          className={`text-xl font-bold p-2 my-2 rounded-md border-2 border-blue-300 focus:outline-0`}
+          className={`font-bold p-2 my-2 rounded-md border-2 border-blue-300 focus:outline-0`}
           autoFocus
           onChange={(e) => {
             setTaskDescription(e.target.value);
@@ -30,7 +29,7 @@ const EditTask = ({
         />
         <input
           type={`date`}
-          className={`text-xl font-bold p-2 my-2 rounded-md w-3/12 border-2 border-blue-300 focus:outline-0`}
+          className={`font-bold p-2 my-2 rounded-md w-3/12 border-2 border-blue-300 focus:outline-0`}
           value={taskDueDate}
           onChange={(e) => {
             setTaskDueDate(e.target.value);

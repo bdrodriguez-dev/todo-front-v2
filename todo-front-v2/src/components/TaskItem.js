@@ -16,6 +16,7 @@ const TaskItem = ({
   showEditFormBool,
   hideEditForm,
   handleEditSubmit,
+  toProperCase,
 }) => {
   return (
     <div id={id}>
@@ -41,7 +42,7 @@ const TaskItem = ({
           <div className={`w-full p-4 flex-col`}>
             <p className={`text-xl font-bold`}>{taskObj?.todo}</p>
             <p>
-              {taskObj?.list} - {taskObj?.dueDate}
+              {toProperCase(taskObj.list)} - {taskObj.dueDate}
             </p>
           </div>
         </div>

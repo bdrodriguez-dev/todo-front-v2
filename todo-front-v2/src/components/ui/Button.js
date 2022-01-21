@@ -15,7 +15,7 @@ const Button = ({ type, variant, buttonText, onClick }) => {
     <button
       type={type}
       variant={variant}
-      className={`${buttonColor} text-white rounded-md px-2 py-1 mx-2`}
+      className={`${buttonColor} text-white rounded-md px-2 py-1 mx-2 h-max`}
       onClick={onClick}
     >
       {buttonText}

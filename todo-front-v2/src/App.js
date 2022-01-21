@@ -38,9 +38,6 @@ const App = () => {
         setShowTaskCreateForm={setShowTaskCreateForm}
         deleteFlag={deleteFlag}
         setDeleteFlag={setDeleteFlag}
-        // showEditFormArr={showEditFormArr}
-        // toggleEditableTaskItems={toggleEditableTaskItems}
-        // hideEditForm={hideEditForm}
       />
 
       {/* Button: Create new task */}
