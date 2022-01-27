@@ -30,7 +30,6 @@ const App = () => {
 
   return (
     <>
-      <h1 className={`text-3xl`}>Array of Zero [0]</h1>
       <TaskList
         tasks={tasks}
         setTasks={setTasks}

@@ -16,6 +16,7 @@ const TaskList = ({
    * Hooks
    * */
   const [showEditFormArr, setShowEditFormArr] = useState([]);
+  const [listArray, setListArray] = useState(["inbox"]);
 
   useEffect(() => {
     let showEditFormArrTemp = tasks.map((taskObj) => {
@@ -94,6 +95,10 @@ const TaskList = ({
     return first + rest;
   };
 
+  const handleNewList = (newList) => {
+    setListArray([...listArray, newList]);
+  }
+
   return (
     <ul className={`my-16`}>
       {showEditFormArr.length === tasks.length ? (
@@ -139,6 +144,8 @@ const TaskList = ({
             }}
             handleCreateSubmit={handleCreateSubmit}
             toProperCase={toProperCase}
+            listArray={listArray}
+            handleNewList={handleNewList}
           />
         </TaskCard>
       ) : null}

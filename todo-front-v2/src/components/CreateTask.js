@@ -1,9 +1,9 @@
 import Button from "./ui/Button";
 import {useState} from "react";
+import ListSelect from './ListSelect/ListSelect';
 
-const CreateTask = ({hideCreateForm, handleCreateSubmit, toProperCase}) => {
+const CreateTask = ({hideCreateForm, handleCreateSubmit, toProperCase, listArray, handleNewList}) => {
     const [selectedList, setSelectedList] = useState();
-    const [listArray, setListArray] = useState(["inbox"]);
     const [showListSelect, setShowListSelect] = useState(false);
 
     const handleSelectChange = (e) => {
@@ -30,16 +30,13 @@ const CreateTask = ({hideCreateForm, handleCreateSubmit, toProperCase}) => {
                         className={`font-bold py-2 px-2 my-2 mr-2 rounded-md w-4/12 border-2 border-blue-300`}
                     />
                     {/*  List */}
-                    <select
-                        value={selectedList}
-                        onChange={handleSelectChange}
-                        className={`appearance-none font-bold py-2 px-2 my-2 mr-2 rounded-md w-max border-2 border-blue-300`}
-                    >
-                        {listArray.map((list) => {
-                            return <option value={list}>{toProperCase(list)}</option>;
-                        })}
-                    </select>
-                    <Button type={`button`} buttonText={`Add new list`} variant={`neutral`} />
+                    <ListSelect
+                      selectedList={selectedList}
+                      handleSelectChange={handleSelectChange}
+                      listArray={listArray}
+                      toProperCase={toProperCase}
+                      handleNewList={handleNewList}
+                    />
                 </div>
             </div>
             <hr />
