@@ -6,18 +6,12 @@ import axios from "axios";
 
 const TaskList = ({
   tasks,
-  setTasks,
-  showTaskCreateForm,
-  setShowTaskCreateForm,
   deleteFlag,
   setDeleteFlag,
-  toProperCase
+  toProperCase,
+  lists,
 }) => {
-  /*
-   * Hooks
-   * */
   const [showEditFormArr, setShowEditFormArr] = useState([]);
-
 
   useEffect(() => {
     let showEditFormArrTemp = tasks.map((taskObj) => {
@@ -29,27 +23,20 @@ const TaskList = ({
     setShowEditFormArr(showEditFormArrTemp);
   }, [tasks]);
 
-  /*
-   * Functions
-   * */
-
   const handleDelete = async (id) => {
     const deletedTodo = await axios.delete(`http://localhost:8000/todos/${id}`);
     setDeleteFlag(!deleteFlag);
   };
 
-
-
-  const handleEditSubmit = async (e, id) => {
-      const task = e.target[0].value;
-      let dueDate = e.target[1].value;
-      console.log(task, dueDate);
-      try {
-        const updatedTask = await axios.put(`http://localhost:8000/todos/${id}?todo=${task}&dueDate=${dueDate}`)
-        console.log(updatedTask);
-      } catch (error) {
-        console.log(error);
-      }
+  const handleEditSubmit = async (task, dueDate, list, id) => {
+    try {
+      const updatedTask = await axios.put(
+        `http://localhost:8000/todos/${id}?todo=${task}&dueDate=${dueDate}&list=${list}`
+      );
+      console.log(updatedTask);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const hideEditForm = (id) => {
@@ -73,10 +60,6 @@ const TaskList = ({
     setShowEditFormArr(showEditFormArrCopy);
   };
 
-
-
-
-
   return (
     <ul className={`my-16`}>
       {showEditFormArr.length === tasks.length ? (
@@ -94,7 +77,6 @@ const TaskList = ({
                   handleDelete={handleDelete}
                   hideEditForm={hideEditForm}
                   tasks={tasks}
-                  setTasks={setTasks}
                   editInputValue={() => {
                     return tasks[
                       tasks.findIndex((task) => {
@@ -106,6 +88,7 @@ const TaskList = ({
                   toggleEditableTaskItems={toggleEditableTaskItems}
                   handleEditSubmit={handleEditSubmit}
                   toProperCase={toProperCase}
+                  lists={lists}
                 />
               </TaskCard>
             </li>
@@ -114,7 +97,6 @@ const TaskList = ({
       ) : (
         <p>Not loaded</p>
       )}
-
     </ul>
   );
 };

@@ -1,32 +1,35 @@
-import { useEffect, useState } from 'react';
-import axios from 'axios';
-import TaskList from './TaskList';
-import TaskCard from './TaskCard';
-import CreateTaskForm from './CreateTaskForm';
-import CreateContainer from './CreateContainer';
+import { useEffect, useState } from "react";
+import axios from "axios";
+import TaskList from "./TaskList";
+import TaskCard from "./TaskCard";
+import CreateTaskForm from "./CreateTaskForm";
+import CreateContainer from "./CreateContainer";
 
 const TaskAppContainer = () => {
-
-  const [tasks, setTasks] = useState([]);
-  const [listArray, setListArray] = useState(["inbox"]);
+  const [appData, setAppData] = useState({
+    tasks: [],
+    lists: [],
+  });
+  // const [tasks, setTasks] = useState([]);
+  // const [listArray, setListArray] = useState(["inbox"]);
   const [deleteFlag, setDeleteFlag] = useState(false);
 
   // Get tasks from db and update state
   useEffect(() => {
-    const getTasks = async () => {
+    const getAppData = async () => {
       try {
         const tasks = await axios.get(`http://localhost:8000/todos`);
-        setTasks(tasks.data);
+        const lists = await axios.get(`http://localhost:8000/lists`);
+        setAppData({
+          tasks: tasks.data,
+          lists: lists.data,
+        });
       } catch (error) {
         console.log(error);
       }
     };
-    getTasks();
+    getAppData();
   }, [deleteFlag]);
-
-  const handleUpdateListArr = (newList) => {
-    setListArray([...listArray, newList]);
-  }
 
   const toProperCase = (list) => {
     const first = list.slice(0, 1).toUpperCase();
@@ -34,21 +37,20 @@ const TaskAppContainer = () => {
     return first + rest;
   };
 
+  console.log(appData.lists);
+
   return (
     <>
       <TaskList
-        tasks={tasks}
-        setTasks={setTasks}
-        // taskCreateFormVisible={taskCreateFormVisible}
-        // handleShowTaskCreateForm={handleShowTaskCreateForm}
+        tasks={appData.tasks}
         deleteFlag={deleteFlag}
         setDeleteFlag={setDeleteFlag}
         toProperCase={toProperCase}
+        lists={appData.lists}
       />
       <CreateContainer
         toProperCase={toProperCase}
-        listArray={listArray}
-        handleUpdateListArr={handleUpdateListArr}
+        lists={appData.lists}
       />
     </>
   );

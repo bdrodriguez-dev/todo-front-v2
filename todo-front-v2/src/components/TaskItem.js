@@ -17,6 +17,7 @@ const TaskItem = ({
   hideEditForm,
   handleEditSubmit,
   toProperCase,
+  lists,
 }) => {
   return (
     <div id={id}>
@@ -31,6 +32,8 @@ const TaskItem = ({
           editInputValue={editInputValue}
           handleDelete={handleDelete}
           handleEditSubmit={handleEditSubmit}
+          lists={lists}
+          toProperCase={toProperCase}
         />
       ) : (
         <div

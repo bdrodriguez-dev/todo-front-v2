@@ -5,7 +5,7 @@ import axios from "axios";
 import Button from "./ui/Button";
 import CreateListForm from './CreateListForm';
 
-const CreateContainer = ({ toProperCase, listArray, handleUpdateListArr }) => {
+const CreateContainer = ({ toProperCase, lists, handleUpdateListArr }) => {
   const [taskCreateFormVisible, setTaskCreateFormVisible] = useState(false);
   const [listCreateFormVisible, setListCreateFormVisible] = useState(false);
   const [taskCreateButtonVisible, setTaskCreateButtonVisible] = useState(true);
@@ -60,24 +60,6 @@ const CreateContainer = ({ toProperCase, listArray, handleUpdateListArr }) => {
     showListCreateForm();
   };
 
-  // const handleTaskCreateSubmit = async (e) => {
-  //   const task = e.target[0].value;
-  //   const dueDate = e.target[1].value;
-  //
-  //   let dueDateQueryString = `&dueDate=${dueDate}`;
-  //   if (!dueDate) {
-  //     dueDateQueryString = "";
-  //   }
-  //
-  //   try {
-  //     await axios.post(
-  //       `http://localhost:8000/todos?todo=${task}${dueDateQueryString}`
-  //     );
-  //   } catch (e) {
-  //     console.log(e);
-  //   }
-  // };
-
   const handleTaskCreateSubmit = async (taskDescription, dueDate, selectedList) => {
     let dueDateQueryString = `&dueDate=${dueDate}`;
     if (!dueDate) {
@@ -93,9 +75,23 @@ const CreateContainer = ({ toProperCase, listArray, handleUpdateListArr }) => {
     }
   };
 
-  const handleListCreateSubmit = (newList) => {
-    if (newList !== "" && !listArray.includes(newList)) {
-      handleUpdateListArr(newList);
+  const handleListCreateSubmit = async (newList) => {
+    const checkForExistingList = (newList) => {
+      let appearsInList = false;
+      lists.forEach(list => {
+        if (list.name === newList) {
+          appearsInList = true;
+          return appearsInList;
+        }
+      });
+      return appearsInList;
+    };
+    if (newList !== "" && !checkForExistingList(newList)) {
+      try {
+        await axios.post(`http://localhost:8000/lists?name=${newList}`)
+      } catch (error) {
+        console.log(error);
+      }
     }
     hideListCreateForm();
   };
@@ -126,7 +122,7 @@ const CreateContainer = ({ toProperCase, listArray, handleUpdateListArr }) => {
             hideTaskCreateForm={hideTaskCreateForm}
             handleTaskCreateSubmit={handleTaskCreateSubmit}
             toProperCase={toProperCase}
-            listArray={listArray}
+            lists={lists}
           />
         </TaskCard>
       ) : null}
@@ -137,7 +133,7 @@ const CreateContainer = ({ toProperCase, listArray, handleUpdateListArr }) => {
             hideListCreateForm={hideListCreateForm}
             handleListCreateSubmit={handleListCreateSubmit}
             toProperCase={toProperCase}
-            listArray={listArray}
+            lists={lists}
           />
         </TaskCard>
       ) : null}

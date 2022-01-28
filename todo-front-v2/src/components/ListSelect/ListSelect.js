@@ -2,8 +2,7 @@ const ListSelect = ({
   selectedList,
   handleSelectChange,
   toProperCase,
-  listArray,
-  handleNewList,
+  lists,
 }) => {
   return (
     <>
@@ -12,8 +11,8 @@ const ListSelect = ({
         onChange={handleSelectChange}
         className={`appearance-none font-bold py-2 px-2 my-2 mr-2 rounded-md w-max border-2 border-blue-300`}
       >
-        {listArray.map((list) => {
-          return <option key={list} value={list}>{toProperCase(list)}</option>;
+        {lists.map((list) => {
+          return <option key={list.name} value={list.name}>{toProperCase(list.name)}</option>;
         })}
       </select>
       {/*<Button type={`button`} buttonText={`Add new list`} variant={`neutral`} />*/}

@@ -1,7 +1,6 @@
-import { XCircleIcon } from "@heroicons/react/solid";
-import axios from "axios";
 import { useState } from "react";
 import Button from "./ui/Button";
+import ListSelect from "./ListSelect/ListSelect";
 
 const EditTask = ({
   taskObj,
@@ -9,31 +8,52 @@ const EditTask = ({
   hideEditForm,
   id,
   handleEditSubmit,
+  lists,
+  toProperCase,
 }) => {
   const [taskDescription, setTaskDescription] = useState(taskObj.todo);
-  const [taskDueDate, setTaskDueDate] = useState(taskObj.dueDate);
+  const [dueDate, setDueDate] = useState(taskObj.dueDate);
+  const [selectedList, setSelectedList] = useState(taskObj.list);
+
+  const handleTaskDescriptionChange = (e) => {
+    setTaskDescription(e.target.value);
+  };
+
+  const handleDueDateChange = (e) => {
+    setDueDate(e.target.value);
+  };
+
+  const handleSelectChange = (e) => {
+    setSelectedList(e.target.value);
+  };
 
   return (
-    <form className={`w-full p-4 flex-col justify-between bg-green-200`}
-        onSubmit={(e) => handleEditSubmit(e, id)}>
+    <form
+      className={`w-full p-4 flex-col justify-between bg-green-200`}
+      onSubmit={() =>
+        handleEditSubmit(taskDescription, dueDate, selectedList, id)
+      }
+    >
       {/* Inputs */}
       <div className={"flex flex-col"}>
         <input
           type={`text`}
           className={`font-bold p-2 my-2 rounded-md border-2 border-blue-300 focus:outline-0`}
           autoFocus
-          onChange={(e) => {
-            setTaskDescription(e.target.value);
-          }}
+          onChange={handleTaskDescriptionChange}
           value={taskDescription}
         />
         <input
           type={`date`}
           className={`font-bold p-2 my-2 rounded-md w-3/12 border-2 border-blue-300 focus:outline-0`}
-          value={taskDueDate}
-          onChange={(e) => {
-            setTaskDueDate(e.target.value);
-          }}
+          value={dueDate}
+          onChange={handleDueDateChange}
+        />
+        <ListSelect
+          handleSelectChange={handleSelectChange}
+          selectedList={selectedList}
+          lists={lists}
+          toProperCase={toProperCase}
         />
       </div>
       {/* Buttons */}
@@ -52,11 +72,7 @@ const EditTask = ({
         {/*        onClick={() => hideEditForm(id)}>*/}
         {/*    Cancel*/}
         {/*</button>*/}
-        <Button
-          buttonText={`Save`}
-          type={`submit`}
-          variant={`primary`}
-        />
+        <Button buttonText={`Save`} type={`submit`} variant={`primary`} />
         <Button
           buttonText={`Delete`}
           type={`button`}

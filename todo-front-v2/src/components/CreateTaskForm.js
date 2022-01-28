@@ -6,12 +6,12 @@ const CreateTaskForm = ({
   hideTaskCreateForm,
   handleTaskCreateSubmit,
   toProperCase,
-  listArray,
+  lists,
   handleNewList,
 }) => {
   const [taskDescription, setTaskDescription] = useState("");
   const [dueDate, setDueDate] = useState("");
-  const [selectedList, setSelectedList] = useState('');
+  const [selectedList, setSelectedList] = useState('inbox');
 
   const handleTaskDescriptionChange = (e) => {
     setTaskDescription(e.target.value);
@@ -54,9 +54,8 @@ const CreateTaskForm = ({
           <ListSelect
             selectedList={selectedList}
             handleSelectChange={handleSelectChange}
-            listArray={listArray}
+            lists={lists}
             toProperCase={toProperCase}
-            handleNewList={handleNewList}
           />
         </div>
       </div>
