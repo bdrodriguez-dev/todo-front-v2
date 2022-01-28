@@ -1,6 +1,6 @@
 import TaskCard from "./TaskCard";
 import TaskItem from "./TaskItem";
-import CreateTask from "./CreateTask";
+import CreateTaskForm from "./CreateTaskForm";
 import { useEffect, useState } from "react";
 import axios from "axios";
 
@@ -11,12 +11,13 @@ const TaskList = ({
   setShowTaskCreateForm,
   deleteFlag,
   setDeleteFlag,
+  toProperCase
 }) => {
   /*
    * Hooks
    * */
   const [showEditFormArr, setShowEditFormArr] = useState([]);
-  const [listArray, setListArray] = useState(["inbox"]);
+
 
   useEffect(() => {
     let showEditFormArrTemp = tasks.map((taskObj) => {
@@ -37,24 +38,7 @@ const TaskList = ({
     setDeleteFlag(!deleteFlag);
   };
 
-  const handleCreateSubmit = async (e) => {
-    // e.preventDefault();
-    const task = e.target[0].value;
-    const dueDate = e.target[1].value;
 
-    let dueDateQueryString = `&dueDate=${dueDate}`;
-    if (!dueDate) {
-      dueDateQueryString = '';
-    }
-
-    try {
-      await axios.post(
-        `http://localhost:8000/todos?todo=${task}${dueDateQueryString}`
-      );
-    } catch (e) {
-      console.log(e);
-    }
-  };
 
   const handleEditSubmit = async (e, id) => {
       const task = e.target[0].value;
@@ -89,15 +73,9 @@ const TaskList = ({
     setShowEditFormArr(showEditFormArrCopy);
   };
 
-  const toProperCase = (list) => {
-    const first = list.slice(0, 1).toUpperCase();
-    const rest = list.slice(1);
-    return first + rest;
-  };
 
-  const handleNewList = (newList) => {
-    setListArray([...listArray, newList]);
-  }
+
+
 
   return (
     <ul className={`my-16`}>
@@ -136,19 +114,7 @@ const TaskList = ({
       ) : (
         <p>Not loaded</p>
       )}
-      {showTaskCreateForm ? (
-        <TaskCard>
-          <CreateTask
-            hideCreateForm={() => {
-              setShowTaskCreateForm(false);
-            }}
-            handleCreateSubmit={handleCreateSubmit}
-            toProperCase={toProperCase}
-            listArray={listArray}
-            handleNewList={handleNewList}
-          />
-        </TaskCard>
-      ) : null}
+
     </ul>
   );
 };
