@@ -16,7 +16,7 @@ const CreateListForm = ({
     <form
       className={`w-full p-4 flex flex-col justify-between`}
       onSubmit={(e) => {
-        // e.preventDefault();
+        e.preventDefault();
         handleListCreateSubmit(newList);
       }}
     >

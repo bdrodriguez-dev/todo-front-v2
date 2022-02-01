@@ -7,7 +7,6 @@ const TaskDisplay = ({
   id,
   handleCompletedChange,
 }) => {
-  console.log(taskObj);
   return (
     <div className={`flex`}>
       <div className={`flex justify-center items-center w-1/12 border-r-2`}>

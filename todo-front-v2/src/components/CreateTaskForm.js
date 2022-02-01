@@ -7,6 +7,7 @@ const CreateTaskForm = ({
   handleTaskCreateSubmit,
   toProperCase,
   lists,
+  updateStateForRerenderAfterCreate,
 }) => {
   const [taskDescription, setTaskDescription] = useState("");
   const [dueDate, setDueDate] = useState("");
@@ -27,7 +28,8 @@ const CreateTaskForm = ({
   return (
     <form
       className={`w-full p-4 flex flex-col justify-between`}
-      onSubmit={() => {
+      onSubmit={(e) => {
+        e.preventDefault();
         handleTaskCreateSubmit(taskDescription, dueDate, selectedList);
       }}
     >

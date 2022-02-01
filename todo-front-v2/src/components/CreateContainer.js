@@ -3,64 +3,48 @@ import CreateTaskForm from "./CreateTaskForm";
 import { useState } from "react";
 import axios from "axios";
 import Button from "./ui/Button";
-import CreateListForm from './CreateListForm';
+import CreateListForm from "./CreateListForm";
 
-const CreateContainer = ({ toProperCase, lists, handleUpdateListArr }) => {
-  const [taskCreateFormVisible, setTaskCreateFormVisible] = useState(false);
-  const [listCreateFormVisible, setListCreateFormVisible] = useState(false);
-  const [taskCreateButtonVisible, setTaskCreateButtonVisible] = useState(true);
-  const [listCreateButtonVisible, setListCreateButtonVisible] = useState(true);
+const CreateContainer = ({
+  toProperCase,
+  lists,
+  handleUpdateListArr,
+  updateStateForRerenderAfterCreate,
+  triggerApiFetch,
+}) => {
+  const [UIVisibility, setUIVisibility] = useState({
+    taskCreateFormVisible: false,
+    listCreateFormVisible: false,
+    buttonsVisible: true,
+  });
 
-  const showTaskCreateButton = () => {
-    setTaskCreateButtonVisible(true);
+  const toggleButtonsAndForms = (formType) => {
+    const buttonState = UIVisibility.buttonsVisible;
+    const taskFormState = UIVisibility.taskCreateFormVisible;
+    const listFormState = UIVisibility.listCreateFormVisible;
+
+    let updatedUIState = {};
+    if (formType === "task") {
+      updatedUIState = {
+        ...UIVisibility,
+        buttonsVisible: !buttonState,
+        taskCreateFormVisible: !taskFormState,
+      };
+    } else if (formType === "list") {
+      updatedUIState = {
+        ...UIVisibility,
+        buttonsVisible: !buttonState,
+        listCreateFormVisible: !listFormState,
+      };
+    }
+    setUIVisibility(updatedUIState);
   };
 
-  const hideTaskCreateButton = () => {
-    setTaskCreateButtonVisible(false);
-  };
-  const showListCreateButton = () => {
-    setListCreateButtonVisible(true);
-  };
-
-  const hideListCreateButton = () => {
-    setListCreateButtonVisible(false);
-  };
-
-  const showTaskCreateForm = () => {
-    setTaskCreateFormVisible(true);
-  };
-
-  const hideTaskCreateForm = () => {
-    setTaskCreateFormVisible(false);
-    showTaskCreateButton();
-    showListCreateButton();
-  };
-
-  const showListCreateForm = () => {
-    setListCreateFormVisible(true);
-  };
-
-  const hideListCreateForm = () => {
-    setListCreateFormVisible(false);
-    showTaskCreateButton();
-    showListCreateButton();
-  };
-
-  const handleTaskCreateButtonClick = () => {
-    hideListCreateButton();
-    hideTaskCreateButton();
-    hideListCreateForm();
-    showTaskCreateForm();
-  };
-
-  const handleListCreateButtonClick = () => {
-    hideListCreateButton();
-    hideTaskCreateButton();
-    hideTaskCreateForm();
-    showListCreateForm();
-  };
-
-  const handleTaskCreateSubmit = async (taskDescription, dueDate, selectedList) => {
+  const handleTaskCreateSubmit = async (
+    taskDescription,
+    dueDate,
+    selectedList
+  ) => {
     let dueDateQueryString = `&dueDate=${dueDate}`;
     if (!dueDate) {
       dueDateQueryString = "";
@@ -70,6 +54,8 @@ const CreateContainer = ({ toProperCase, lists, handleUpdateListArr }) => {
       await axios.post(
         `http://localhost:8000/todos?todo=${taskDescription}${dueDateQueryString}&list=${selectedList}`
       );
+      toggleButtonsAndForms("task");
+      triggerApiFetch();
     } catch (e) {
       console.log(e);
     }
@@ -78,7 +64,7 @@ const CreateContainer = ({ toProperCase, lists, handleUpdateListArr }) => {
   const handleListCreateSubmit = async (newList) => {
     const checkForExistingList = (newList) => {
       let appearsInList = false;
-      lists.forEach(list => {
+      lists.forEach((list) => {
         if (list.name === newList) {
           appearsInList = true;
           return appearsInList;
@@ -88,49 +74,53 @@ const CreateContainer = ({ toProperCase, lists, handleUpdateListArr }) => {
     };
     if (newList !== "" && !checkForExistingList(newList)) {
       try {
-        await axios.post(`http://localhost:8000/lists?name=${newList}`)
+        await axios.post(`http://localhost:8000/lists?name=${newList}`);
+        toggleButtonsAndForms("list");
+        triggerApiFetch();
       } catch (error) {
         console.log(error);
       }
     }
-    hideListCreateForm();
   };
 
   return (
     <>
-      {taskCreateButtonVisible ? (
-        <Button
-          type={`button`}
-          onClick={handleTaskCreateButtonClick}
-          buttonText={`Add new task`}
-          variant={`neutral`}
-        />
+      {UIVisibility.buttonsVisible ? (
+        <>
+          <Button
+            type={`button`}
+            onClick={() => toggleButtonsAndForms("task")}
+            buttonText={`Add new task`}
+            variant={`neutral`}
+          />
+
+          <Button
+            type={`button`}
+            onClick={() => toggleButtonsAndForms("list")}
+            buttonText={`Add new list`}
+            variant={`neutral`}
+          />
+        </>
       ) : null}
 
-      {listCreateButtonVisible ? (
-        <Button
-          type={`button`}
-          onClick={handleListCreateButtonClick}
-          buttonText={`Add new list`}
-          variant={`neutral`}
-        />
-      ) : null}
-
-      {taskCreateFormVisible ? (
+      {UIVisibility.taskCreateFormVisible ? (
         <TaskCard>
           <CreateTaskForm
-            hideTaskCreateForm={hideTaskCreateForm}
+            hideTaskCreateForm={() => toggleButtonsAndForms("task")}
             handleTaskCreateSubmit={handleTaskCreateSubmit}
             toProperCase={toProperCase}
             lists={lists}
+            updateStateForRerenderAfterCreate={
+              updateStateForRerenderAfterCreate
+            }
           />
         </TaskCard>
       ) : null}
 
-      {listCreateFormVisible ? (
+      {UIVisibility.listCreateFormVisible ? (
         <TaskCard>
           <CreateListForm
-            hideListCreateForm={hideListCreateForm}
+            hideListCreateForm={() => toggleButtonsAndForms("list")}
             handleListCreateSubmit={handleListCreateSubmit}
             toProperCase={toProperCase}
             lists={lists}

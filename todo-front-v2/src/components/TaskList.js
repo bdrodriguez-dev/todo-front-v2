@@ -11,6 +11,7 @@ const TaskList = ({
   toProperCase,
   lists,
   handleCompletedChange,
+  triggerApiFetch,
 }) => {
   const [showEditFormArr, setShowEditFormArr] = useState([]);
 
@@ -25,8 +26,27 @@ const TaskList = ({
   }, [tasks]);
 
   const handleDelete = async (id) => {
-    const deletedTodo = await axios.delete(`http://localhost:8000/todos/${id}`);
-    setDeleteFlag(!deleteFlag);
+    try {
+      const deletedTodo = await axios.delete(
+        `http://localhost:8000/todos/${id}`
+      );
+      console.log(deletedTodo);
+      triggerApiFetch();
+    } catch (error) {
+      console.log(error);
+    }
+  };
+
+  const handleDeleteList = async (id) => {
+    try {
+      const deletedList = await axios.delete(
+        `http://localhost:8000/lists/${id}`
+      );
+      console.log(deletedList);
+      setDeleteFlag(!deleteFlag);
+    } catch (error) {
+      console.log(error);
+    }
   };
 
   const handleEditSubmit = async (task, dueDate, list, id) => {
@@ -35,6 +55,7 @@ const TaskList = ({
         `http://localhost:8000/todos/${id}?todo=${task}&dueDate=${dueDate}&list=${list}`
       );
       console.log(updatedTask);
+      triggerApiFetch();
     } catch (error) {
       console.log(error);
     }
@@ -91,6 +112,7 @@ const TaskList = ({
                   toProperCase={toProperCase}
                   lists={lists}
                   handleCompletedChange={handleCompletedChange}
+                  triggerApiFetch={triggerApiFetch}
                 />
               </TaskCard>
             </li>

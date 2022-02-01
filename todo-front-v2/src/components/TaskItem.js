@@ -20,6 +20,7 @@ const TaskItem = ({
   toProperCase,
   lists,
   handleCompletedChange,
+  triggerApiFetch,
 }) => {
   return (
     <div id={id}>
@@ -44,6 +45,7 @@ const TaskItem = ({
           toProperCase={toProperCase}
           id={id}
           handleCompletedChange={handleCompletedChange}
+          triggerApiFetch={triggerApiFetch}
         />
       )}
     </div>

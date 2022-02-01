@@ -30,8 +30,11 @@ const EditTask = ({
   return (
     <form
       className={`w-full p-4 flex-col justify-between bg-green-200`}
-      onSubmit={() =>
-        handleEditSubmit(taskDescription, dueDate, selectedList, id)
+      onSubmit={(e) => {
+        e.preventDefault();
+        handleEditSubmit(taskDescription, dueDate, selectedList, id);
+
+      }
       }
     >
       {/* Inputs */}

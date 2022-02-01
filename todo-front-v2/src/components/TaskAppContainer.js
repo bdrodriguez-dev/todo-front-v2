@@ -8,7 +8,7 @@ const TaskAppContainer = () => {
     tasks: [],
     lists: [],
   });
-  const [deleteFlag, setDeleteFlag] = useState(false);
+  const [fetchFromApiFlag, setFetchFromApiFlag] = useState(false);
   const [completedChangeFlag, setCompletedChangeFlag] = useState(false);
 
   // Get tasks from db and update state
@@ -26,12 +26,17 @@ const TaskAppContainer = () => {
       }
     };
     getAppData();
-  }, [deleteFlag, completedChangeFlag]);
+  }, [fetchFromApiFlag]);
 
   const toProperCase = (list) => {
     const first = list.slice(0, 1).toUpperCase();
     const rest = list.slice(1);
     return first + rest;
+  };
+
+  const updateStateForRerenderAfterCreate = (createdTodo) => {
+    const appDataTasks = appData.tasks;
+    setAppData({ ...appData, tasks: [...appData.tasks, createdTodo] });
   };
 
   const handleCompletedChange = async (id, updatedCompleted) => {
@@ -40,30 +45,57 @@ const TaskAppContainer = () => {
       await axios.put(
         `http://localhost:8000/todos/${id}?completed=${updatedCompleted}`
       );
-      setCompletedChangeFlag(!completedChangeFlag);
-      //state change to rerender
-      // const appDataTasksCopy = appData.tasks;
-      // const i = appDataTasksCopy.findIndex(
-      //   (taskObj) => taskObj._id === id
-      // );
-      // appDataTasksCopy[i].completed = updatedCompleted;
-      // setAppData({ ...appData, tasks: [...appData.tasks, appDataTasksCopy]});
+      triggerApiFetch();
     } catch (error) {
       console.log(error);
     }
+  };
+
+  const triggerApiFetch = () => {
+    setFetchFromApiFlag(!fetchFromApiFlag);
   };
 
   return (
     <>
       <TaskList
         tasks={appData.tasks}
-        deleteFlag={deleteFlag}
-        setDeleteFlag={setDeleteFlag}
+        deleteFlag={fetchFromApiFlag}
+        setDeleteFlag={setFetchFromApiFlag}
         toProperCase={toProperCase}
         lists={appData.lists}
         handleCompletedChange={handleCompletedChange}
+        triggerApiFetch={triggerApiFetch}
       />
-      <CreateContainer toProperCase={toProperCase} lists={appData.lists} />
+      <CreateContainer
+        toProperCase={toProperCase}
+        lists={appData.lists}
+        triggerApiFetch={triggerApiFetch}
+      />
+      <ul>
+        {appData.lists.map((list) => {
+          return (
+            <>
+              <li>{list.name}</li>;
+              <button
+                onClick={async () => {
+                  try {
+                    const deletedList = await axios.delete(
+                      `http://localhost:8000/lists/${list._id}`
+                    );
+                    console.log(deletedList);
+                    triggerApiFetch();
+                  } catch (error) {
+                    console.log(error);
+                  }
+                }}
+                style={{ backgroundColor: "red" }}
+              >
+                Delete
+              </button>
+            </>
+          );
+        })}
+      </ul>
     </>
   );
 };
