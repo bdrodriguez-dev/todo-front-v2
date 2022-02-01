@@ -10,6 +10,7 @@ const TaskList = ({
   setDeleteFlag,
   toProperCase,
   lists,
+  handleCompletedChange,
 }) => {
   const [showEditFormArr, setShowEditFormArr] = useState([]);
 
@@ -89,6 +90,7 @@ const TaskList = ({
                   handleEditSubmit={handleEditSubmit}
                   toProperCase={toProperCase}
                   lists={lists}
+                  handleCompletedChange={handleCompletedChange}
                 />
               </TaskCard>
             </li>

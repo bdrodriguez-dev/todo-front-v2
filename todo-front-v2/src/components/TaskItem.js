@@ -3,6 +3,7 @@ import { TrashIcon } from "@heroicons/react/outline";
 import { InformationCircleIcon } from "@heroicons/react/solid";
 import axios from "axios";
 import EditTask from "./EditTask";
+import TaskDisplay from "./TaskDisplay";
 
 const TaskItem = ({
   taskObj,
@@ -18,6 +19,7 @@ const TaskItem = ({
   handleEditSubmit,
   toProperCase,
   lists,
+  handleCompletedChange,
 }) => {
   return (
     <div id={id}>
@@ -36,19 +38,13 @@ const TaskItem = ({
           toProperCase={toProperCase}
         />
       ) : (
-        <div
-          className={`flex`}
-          onClick={() => {
-            toggleEditableTaskItems(id);
-          }}
-        >
-          <div className={`w-full p-4 flex-col`}>
-            <p className={`text-xl font-bold`}>{taskObj?.todo}</p>
-            <p>
-              {toProperCase(taskObj.list)} - {taskObj.dueDate}
-            </p>
-          </div>
-        </div>
+        <TaskDisplay
+          toggleEditableTaskItems={toggleEditableTaskItems}
+          taskObj={taskObj}
+          toProperCase={toProperCase}
+          id={id}
+          handleCompletedChange={handleCompletedChange}
+        />
       )}
     </div>
   );

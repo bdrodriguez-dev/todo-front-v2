@@ -1,8 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
 import TaskList from "./TaskList";
-import TaskCard from "./TaskCard";
-import CreateTaskForm from "./CreateTaskForm";
 import CreateContainer from "./CreateContainer";
 
 const TaskAppContainer = () => {
@@ -10,9 +8,8 @@ const TaskAppContainer = () => {
     tasks: [],
     lists: [],
   });
-  // const [tasks, setTasks] = useState([]);
-  // const [listArray, setListArray] = useState(["inbox"]);
   const [deleteFlag, setDeleteFlag] = useState(false);
+  const [completedChangeFlag, setCompletedChangeFlag] = useState(false);
 
   // Get tasks from db and update state
   useEffect(() => {
@@ -29,7 +26,7 @@ const TaskAppContainer = () => {
       }
     };
     getAppData();
-  }, [deleteFlag]);
+  }, [deleteFlag, completedChangeFlag]);
 
   const toProperCase = (list) => {
     const first = list.slice(0, 1).toUpperCase();
@@ -37,7 +34,24 @@ const TaskAppContainer = () => {
     return first + rest;
   };
 
-  console.log(appData.lists);
+  const handleCompletedChange = async (id, updatedCompleted) => {
+    //put request
+    try {
+      await axios.put(
+        `http://localhost:8000/todos/${id}?completed=${updatedCompleted}`
+      );
+      setCompletedChangeFlag(!completedChangeFlag);
+      //state change to rerender
+      // const appDataTasksCopy = appData.tasks;
+      // const i = appDataTasksCopy.findIndex(
+      //   (taskObj) => taskObj._id === id
+      // );
+      // appDataTasksCopy[i].completed = updatedCompleted;
+      // setAppData({ ...appData, tasks: [...appData.tasks, appDataTasksCopy]});
+    } catch (error) {
+      console.log(error);
+    }
+  };
 
   return (
     <>
@@ -47,11 +61,9 @@ const TaskAppContainer = () => {
         setDeleteFlag={setDeleteFlag}
         toProperCase={toProperCase}
         lists={appData.lists}
+        handleCompletedChange={handleCompletedChange}
       />
-      <CreateContainer
-        toProperCase={toProperCase}
-        lists={appData.lists}
-      />
+      <CreateContainer toProperCase={toProperCase} lists={appData.lists} />
     </>
   );
 };
