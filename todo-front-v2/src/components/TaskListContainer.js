@@ -3,13 +3,12 @@ import TaskItem from "./TaskItem";
 import CreateTaskForm from "./CreateTaskForm";
 import { useEffect, useState } from "react";
 import axios from "axios";
+import AllTasksView from "./AllTasksView";
 
-const TaskList = ({
+const TaskListContainer = ({
   tasks,
-  deleteFlag,
-  setDeleteFlag,
-  toProperCase,
   lists,
+  toProperCase,
   handleCompletedChange,
   triggerApiFetch,
 }) => {
@@ -32,18 +31,6 @@ const TaskList = ({
       );
       console.log(deletedTodo);
       triggerApiFetch();
-    } catch (error) {
-      console.log(error);
-    }
-  };
-
-  const handleDeleteList = async (id) => {
-    try {
-      const deletedList = await axios.delete(
-        `http://localhost:8000/lists/${id}`
-      );
-      console.log(deletedList);
-      setDeleteFlag(!deleteFlag);
     } catch (error) {
       console.log(error);
     }
@@ -104,7 +91,7 @@ const TaskList = ({
                       tasks.findIndex((task) => {
                         return task._id === taskObj._id;
                       })
-                    ].todo;
+                      ].todo;
                   }}
                   showEditFormBool={showEditFormBool}
                   toggleEditableTaskItems={toggleEditableTaskItems}
@@ -125,4 +112,4 @@ const TaskList = ({
   );
 };
 
-export default TaskList;
+export default TaskListContainer;

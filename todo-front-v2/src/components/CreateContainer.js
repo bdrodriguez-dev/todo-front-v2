@@ -80,6 +80,9 @@ const CreateContainer = ({
       } catch (error) {
         console.log(error);
       }
+    } else {
+      toggleButtonsAndForms("list");
+      alert(`List "${toProperCase(newList)}" already exists`);
     }
   };
 

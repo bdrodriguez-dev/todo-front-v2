@@ -1,6 +1,6 @@
 import { useEffect, useState } from "react";
 import axios from "axios";
-import TaskList from "./TaskList";
+import TaskListContainer from "./TaskListContainer";
 import CreateContainer from "./CreateContainer";
 
 const TaskAppContainer = () => {
@@ -9,7 +9,6 @@ const TaskAppContainer = () => {
     lists: [],
   });
   const [fetchFromApiFlag, setFetchFromApiFlag] = useState(false);
-  const [completedChangeFlag, setCompletedChangeFlag] = useState(false);
 
   // Get tasks from db and update state
   useEffect(() => {
@@ -34,10 +33,10 @@ const TaskAppContainer = () => {
     return first + rest;
   };
 
-  const updateStateForRerenderAfterCreate = (createdTodo) => {
-    const appDataTasks = appData.tasks;
-    setAppData({ ...appData, tasks: [...appData.tasks, createdTodo] });
-  };
+  // const updateStateForRerenderAfterCreate = (createdTodo) => {
+  //   const appDataTasks = appData.tasks;
+  //   setAppData({ ...appData, tasks: [...appData.tasks, createdTodo] });
+  // };
 
   const handleCompletedChange = async (id, updatedCompleted) => {
     //put request
@@ -51,13 +50,30 @@ const TaskAppContainer = () => {
     }
   };
 
+  const handleDeleteList = async (id) => {
+    const listToDelete = appData.lists.find(list => list._id === id);
+    if (listToDelete.name !== 'inbox') {
+      try {
+        const deletedList = await axios.delete(
+          `http://localhost:8000/lists/${id}`
+        );
+        console.log(deletedList);
+        triggerApiFetch();
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      alert(`Cannot delete "Inbox" list`);
+    }
+  };
+
   const triggerApiFetch = () => {
     setFetchFromApiFlag(!fetchFromApiFlag);
   };
 
   return (
     <>
-      <TaskList
+      <TaskListContainer
         tasks={appData.tasks}
         deleteFlag={fetchFromApiFlag}
         setDeleteFlag={setFetchFromApiFlag}
@@ -75,15 +91,11 @@ const TaskAppContainer = () => {
         {appData.lists.map((list) => {
           return (
             <>
-              <li>{list.name}</li>;
+              <li key={list._id}>{list.name}</li>
               <button
                 onClick={async () => {
                   try {
-                    const deletedList = await axios.delete(
-                      `http://localhost:8000/lists/${list._id}`
-                    );
-                    console.log(deletedList);
-                    triggerApiFetch();
+                    await handleDeleteList(list._id)
                   } catch (error) {
                     console.log(error);
                   }
