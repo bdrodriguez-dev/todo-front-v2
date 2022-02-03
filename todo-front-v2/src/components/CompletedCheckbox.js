@@ -3,6 +3,18 @@ import axios from "axios";
 
 const CompletedCheckbox = ({ taskObj, handleCompletedChange}) => {
 
+  // const handleCompletedChange = async (id, updatedCompleted) => {
+  //   //put request
+  //   try {
+  //     await axios.put(
+  //       `http://localhost:8000/todos/${id}?completed=${updatedCompleted}`
+  //     );
+  //     triggerApiFetch();
+  //   } catch (error) {
+  //     console.log(error);
+  //   }
+  // };
+
   return (
     <form>
       <input

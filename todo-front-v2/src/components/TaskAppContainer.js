@@ -33,11 +33,6 @@ const TaskAppContainer = () => {
     return first + rest;
   };
 
-  // const updateStateForRerenderAfterCreate = (createdTodo) => {
-  //   const appDataTasks = appData.tasks;
-  //   setAppData({ ...appData, tasks: [...appData.tasks, createdTodo] });
-  // };
-
   const handleCompletedChange = async (id, updatedCompleted) => {
     //put request
     try {
