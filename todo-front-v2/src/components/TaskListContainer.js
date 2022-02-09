@@ -1,10 +1,7 @@
-import TaskCard from "./TaskCard";
-import TaskItem from "./TaskItem";
-import CreateTaskForm from "./CreateTaskForm";
 import { useEffect, useState } from "react";
 import axios from "axios";
-import AllTasksView from "./AllTasksView";
 import TaskList from "./TaskList";
+import SideMenu from "./ListSelect/SideMenu";
 
 const TaskListContainer = ({
   tasks,
@@ -12,6 +9,7 @@ const TaskListContainer = ({
   toProperCase,
   handleCompletedChange,
   triggerApiFetch,
+  displayedList,
 }) => {
   const [showEditFormArr, setShowEditFormArr] = useState([]);
 
@@ -70,11 +68,21 @@ const TaskListContainer = ({
     setShowEditFormArr(showEditFormArrCopy);
   };
 
+  // const handleChangeDisplayedList = (list) => {
+  //   setDisplayedList(list);
+  // };
+
+  const getTasksForDisplayedList = (list) => {
+    return tasks.filter((task) => {
+      return task.list === list;
+    });
+  };
+
   return (
     <>
       {showEditFormArr.length === tasks.length ? (
         <TaskList
-          tasks={tasks}
+          tasks={getTasksForDisplayedList(displayedList)}
           showEditFormArr={showEditFormArr}
           handleDelete={handleDelete}
           hideEditForm={hideEditForm}

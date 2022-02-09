@@ -2,6 +2,7 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import TaskListContainer from "./TaskListContainer";
 import CreateContainer from "./CreateContainer";
+import SideMenu from "./ListSelect/SideMenu";
 
 const TaskAppContainer = () => {
   const [appData, setAppData] = useState({
@@ -9,6 +10,7 @@ const TaskAppContainer = () => {
     lists: [],
   });
   const [fetchFromApiFlag, setFetchFromApiFlag] = useState(false);
+  const [displayedList, setDisplayedList] = useState("inbox");
 
   // Get tasks from db and update state
   useEffect(() => {
@@ -46,8 +48,8 @@ const TaskAppContainer = () => {
   };
 
   const handleDeleteList = async (id) => {
-    const listToDelete = appData.lists.find(list => list._id === id);
-    if (listToDelete.name !== 'inbox') {
+    const listToDelete = appData.lists.find((list) => list._id === id);
+    if (listToDelete.name !== "inbox") {
       try {
         const deletedList = await axios.delete(
           `http://localhost:8000/lists/${id}`
@@ -62,48 +64,44 @@ const TaskAppContainer = () => {
     }
   };
 
+  const handleChangeDisplayedList = (list) => {
+    setDisplayedList(list);
+    console.log(list);
+  };
+
   const triggerApiFetch = () => {
     setFetchFromApiFlag(!fetchFromApiFlag);
   };
 
   return (
-    <>
-      <TaskListContainer
-        tasks={appData.tasks}
-        deleteFlag={fetchFromApiFlag}
-        setDeleteFlag={setFetchFromApiFlag}
-        toProperCase={toProperCase}
-        lists={appData.lists}
-        handleCompletedChange={handleCompletedChange}
-        triggerApiFetch={triggerApiFetch}
-      />
-      <CreateContainer
-        toProperCase={toProperCase}
-        lists={appData.lists}
-        triggerApiFetch={triggerApiFetch}
-      />
-      <ul>
-        {appData.lists.map((list) => {
-          return (
-            <>
-              <li key={list._id}>{list.name}</li>
-              <button
-                onClick={async () => {
-                  try {
-                    await handleDeleteList(list._id)
-                  } catch (error) {
-                    console.log(error);
-                  }
-                }}
-                style={{ backgroundColor: "red" }}
-              >
-                Delete
-              </button>
-            </>
-          );
-        })}
-      </ul>
-    </>
+    <div className={`flex bg-[#FFFFF3] w-screen h-screen`}>
+      <div className={`flex flex-col w-2/12 min-w-[250px] h-full bg-white`}>
+        <SideMenu
+          lists={appData.lists}
+          toProperCase={toProperCase}
+          displayedList={displayedList}
+          handleChangeDisplayedList={handleChangeDisplayedList}
+        />
+      </div>
+      <div className={`w-10/12`}>
+        <TaskListContainer
+          tasks={appData.tasks}
+          deleteFlag={fetchFromApiFlag}
+          setDeleteFlag={setFetchFromApiFlag}
+          toProperCase={toProperCase}
+          lists={appData.lists}
+          handleCompletedChange={handleCompletedChange}
+          triggerApiFetch={triggerApiFetch}
+          displayedList={displayedList}
+          handleChangeDisplayedList={handleChangeDisplayedList}
+        />
+      </div>
+      {/*<CreateContainer*/}
+      {/*  toProperCase={toProperCase}*/}
+      {/*  lists={appData.lists}*/}
+      {/*  triggerApiFetch={triggerApiFetch}*/}
+      {/*/>*/}
+    </div>
   );
 };
 

@@ -14,20 +14,7 @@ const TaskCard = (
     }) => {
     // const [showEditForm, setShowEditForm] = useState(false);
     return <div
-        className={`mx-6 my-2 shadow-md hover:translate-y-0.5 rounded-md flex-col`}>
-        {/*{!showEditForm ?*/}
-        {/*    <TaskItem*/}
-        {/*        taskObj={taskObj}*/}
-        {/*        id={id}*/}
-        {/*        deleteFunc={deleteFunc}*/}
-        {/*        showEditFormTrue={() => setShowEditForm(true)}*/}
-        {/*    /> :*/}
-        {/*    <EditTask*/}
-        {/*        submitFunc={submitFunc}*/}
-        {/*        taskDescriptionChangeFunc={taskDescriptionChangeFunc}*/}
-        {/*        taskObj={taskObj}*/}
-        {/*        hideEditForm={() => setShowEditForm(false)}*/}
-        {/*    />}*/}
+        className={`mx-6 my-1 shadow-md hover:translate-y-0.5 rounded-md flex-col`}>
         {children}
     </div>
 };

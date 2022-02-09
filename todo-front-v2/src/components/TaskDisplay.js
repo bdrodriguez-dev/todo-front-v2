@@ -8,7 +8,7 @@ const TaskDisplay = ({
   handleCompletedChange,
 }) => {
   return (
-    <div className={`flex`}>
+    <div className={`flex bg-white`}>
       <div className={`flex justify-center items-center w-1/12 border-r-2`}>
         <CompletedCheckbox
           taskObj={taskObj}
