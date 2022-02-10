@@ -74,6 +74,12 @@ const TaskAppContainer = () => {
     setFetchFromApiFlag(!fetchFromApiFlag);
   };
 
+  const getTasksForDisplayedList = (list) => {
+    return appData.tasks.filter((task) => {
+      return task.list === list;
+    });
+  };
+
   return (
     <div className={`flex bg-[#FFFFF3] w-screen h-screen`}>
       <div className={`relative bg-blue-200 z-0 top-0 left-0 border-2 border-blue-300 flex w-full`}>
@@ -87,7 +93,7 @@ const TaskAppContainer = () => {
         </div>
         <div className={`w-10/12`}>
           <TaskListContainer
-            tasks={appData.tasks}
+            tasks={getTasksForDisplayedList(displayedList)}
             deleteFlag={fetchFromApiFlag}
             setDeleteFlag={setFetchFromApiFlag}
             toProperCase={toProperCase}

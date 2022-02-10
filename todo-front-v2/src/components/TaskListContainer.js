@@ -14,14 +14,14 @@ const TaskListContainer = ({
   const [showEditFormArr, setShowEditFormArr] = useState([]);
 
   useEffect(() => {
-    let showEditFormArrTemp = getTasksForDisplayedList(displayedList).map((taskObj) => {
+    let showEditFormArrTemp = tasks.map((taskObj) => {
       return {
         id: taskObj._id,
         showEditForm: false,
       };
     });
     setShowEditFormArr(showEditFormArrTemp);
-  }, [displayedList]);
+  }, [tasks]);
 
   const handleDelete = async (id) => {
     try {
@@ -67,22 +67,13 @@ const TaskListContainer = ({
     });
     setShowEditFormArr(showEditFormArrCopy);
   };
-
-  // const handleChangeDisplayedList = (list) => {
-  //   setDisplayedList(list);
-  // };
-
-  const getTasksForDisplayedList = (list) => {
-    return tasks.filter((task) => {
-      return task.list === list;
-    });
-  };
-
+  console.log(`showEditFormArr: ${JSON.stringify(showEditFormArr)}`);
+  console.log(`tasks: ${JSON.stringify(tasks)}`);
   return (
     <>
-      {showEditFormArr.length === getTasksForDisplayedList(displayedList).length ? (
+      {showEditFormArr.length === tasks.length ? (
         <TaskList
-          tasks={getTasksForDisplayedList(displayedList)}
+          tasks={tasks}
           showEditFormArr={showEditFormArr}
           handleDelete={handleDelete}
           hideEditForm={hideEditForm}
@@ -93,7 +84,7 @@ const TaskListContainer = ({
           handleCompletedChange={handleCompletedChange}
           triggerApiFetch={triggerApiFetch}
         />
-      ) : <p>False</p>}
+      ) : null}
     </>
   );
 };

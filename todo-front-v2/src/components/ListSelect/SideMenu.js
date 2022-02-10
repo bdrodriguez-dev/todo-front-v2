@@ -24,9 +24,17 @@ const SideMenu = ({ lists, toProperCase, handleChangeDisplayedList, displayedLis
         showListModalObj.showListEditModal = false;
       }
     });
-    console.log(showListEditModalArrCopy);
     setShowListEditModalArr(showListEditModalArrCopy);
   }
+
+  const hideListEditModal = (id) => {
+    let listEditModalCopy = [...showListEditModalArr];
+    let i = listEditModalCopy.findIndex(modal => {
+      return modal.id === id;
+    });
+    listEditModalCopy[i].showListEditModal = false;
+    setShowListEditModalArr(listEditModalCopy);
+  };
 
   return (
     <nav className={`w-full`}>
@@ -51,6 +59,7 @@ const SideMenu = ({ lists, toProperCase, handleChangeDisplayedList, displayedLis
                   className={`w-full my-2 flex justify-between ${
                     displayedList === list.name ? "bg-slate-400" : null
                   } `}
+                  key={list._id}
                 >
                   <button
                     className={`text-left whitespace-nowrap overflow-hidden text-ellipsis w-8/12`}
@@ -58,17 +67,16 @@ const SideMenu = ({ lists, toProperCase, handleChangeDisplayedList, displayedLis
                   >
                     {toProperCase(list.name)}
                   </button>
-                  <button onClick={() => toggleListModals(list._id)}>
+
                     {!showListEditModalBool ? (
-                      <DotsHorizontalIcon className={`h-5 w-5 text-blue-500`} />
+                      <button onClick={() => toggleListModals(list._id)}><DotsHorizontalIcon className={`h-5 w-5 text-blue-500`} /></button>
                     ) : (
                       <div
-                        className={`relative flex z-10 w-full h-full justify-center items-center border-2 border-blue-300`}
+                        className={`absolute flex z-10 w-96 h-96 justify-center items-center bg-white shadow-md rounded-md`}
                       >
-                        <Modal />
+                        <Modal hideModal={() => hideListEditModal(list._id)} />
                       </div>
                     )}
-                  </button>
                 </li>
               );
             })}
