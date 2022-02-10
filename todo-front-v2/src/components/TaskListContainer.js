@@ -14,14 +14,14 @@ const TaskListContainer = ({
   const [showEditFormArr, setShowEditFormArr] = useState([]);
 
   useEffect(() => {
-    let showEditFormArrTemp = tasks.map((taskObj) => {
+    let showEditFormArrTemp = getTasksForDisplayedList(displayedList).map((taskObj) => {
       return {
         id: taskObj._id,
         showEditForm: false,
       };
     });
     setShowEditFormArr(showEditFormArrTemp);
-  }, [tasks]);
+  }, [displayedList]);
 
   const handleDelete = async (id) => {
     try {
@@ -80,7 +80,7 @@ const TaskListContainer = ({
 
   return (
     <>
-      {showEditFormArr.length === tasks.length ? (
+      {showEditFormArr.length === getTasksForDisplayedList(displayedList).length ? (
         <TaskList
           tasks={getTasksForDisplayedList(displayedList)}
           showEditFormArr={showEditFormArr}
@@ -93,7 +93,7 @@ const TaskListContainer = ({
           handleCompletedChange={handleCompletedChange}
           triggerApiFetch={triggerApiFetch}
         />
-      ) : null}
+      ) : <p>False</p>}
     </>
   );
 };
