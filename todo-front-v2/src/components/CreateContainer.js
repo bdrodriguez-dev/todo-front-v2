@@ -61,30 +61,30 @@ const CreateContainer = ({
     }
   };
 
-  const handleListCreateSubmit = async (newList) => {
-    const checkForExistingList = (newList) => {
-      let appearsInList = false;
-      lists.forEach((list) => {
-        if (list.name === newList) {
-          appearsInList = true;
-          return appearsInList;
-        }
-      });
-      return appearsInList;
-    };
-    if (newList !== "" && !checkForExistingList(newList)) {
-      try {
-        await axios.post(`http://localhost:8000/lists?name=${newList}`);
-        toggleButtonsAndForms("list");
-        triggerApiFetch();
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      toggleButtonsAndForms("list");
-      alert(`List "${toProperCase(newList)}" already exists`);
-    }
-  };
+  // const handleListCreateSubmit = async (newList) => {
+  //   const checkForExistingList = (newList) => {
+  //     let appearsInList = false;
+  //     lists.forEach((list) => {
+  //       if (list.name === newList) {
+  //         appearsInList = true;
+  //         return appearsInList;
+  //       }
+  //     });
+  //     return appearsInList;
+  //   };
+  //   if (newList !== "" && !checkForExistingList(newList)) {
+  //     try {
+  //       await axios.post(`http://localhost:8000/lists?name=${newList}`);
+  //       toggleButtonsAndForms("list");
+  //       triggerApiFetch();
+  //     } catch (error) {
+  //       console.log(error);
+  //     }
+  //   } else {
+  //     toggleButtonsAndForms("list");
+  //     alert(`List "${toProperCase(newList)}" already exists`);
+  //   }
+  // };
 
   return (
     <>
@@ -120,16 +120,16 @@ const CreateContainer = ({
         </TaskCard>
       ) : null}
 
-      {UIVisibility.listCreateFormVisible ? (
-        <TaskCard>
-          <CreateListForm
-            hideListCreateForm={() => toggleButtonsAndForms("list")}
-            handleListCreateSubmit={handleListCreateSubmit}
-            toProperCase={toProperCase}
-            lists={lists}
-          />
-        </TaskCard>
-      ) : null}
+      {/*{UIVisibility.listCreateFormVisible ? (*/}
+      {/*  // <TaskCard>*/}
+      {/*  //   <CreateListForm*/}
+      {/*  //     hideListCreateForm={() => toggleButtonsAndForms("list")}*/}
+      {/*  //     handleListCreateSubmit={handleListCreateSubmit}*/}
+      {/*  //     toProperCase={toProperCase}*/}
+      {/*  //     lists={lists}*/}
+      {/*  //   />*/}
+      {/*  // </TaskCard>*/}
+      {/*) : null}*/}
     </>
   );
 };

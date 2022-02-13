@@ -3,7 +3,8 @@ import axios from "axios";
 import TaskListContainer from "./TaskListContainer";
 import CreateContainer from "./CreateContainer";
 import SideMenu from "./ListSelect/SideMenu";
-import Modal from './Modal';
+import Modal from "./Modal";
+import CreateListForm from "./CreateListForm";
 
 const TaskAppContainer = () => {
   const [appData, setAppData] = useState({
@@ -12,6 +13,7 @@ const TaskAppContainer = () => {
   });
   const [fetchFromApiFlag, setFetchFromApiFlag] = useState(false);
   const [displayedList, setDisplayedList] = useState("inbox");
+  const [showCreateListModal, setShowCreateListModal] = useState(false);
 
   // Get tasks from db and update state
   useEffect(() => {
@@ -80,15 +82,70 @@ const TaskAppContainer = () => {
     });
   };
 
+  const hideCreateListModalHandler = () => {
+    setShowCreateListModal(false);
+  };
+
+  const showCreateListModalHandler = () => {
+    setShowCreateListModal(true);
+  };
+
+  const handleListCreateSubmit = async (newList) => {
+    const checkForExistingList = (newList) => {
+      let appearsInList = false;
+      appData.lists.forEach((list) => {
+        if (list.name === newList) {
+          appearsInList = true;
+          return appearsInList;
+        }
+      });
+      return appearsInList;
+    };
+    if (newList !== "" && !checkForExistingList(newList)) {
+      try {
+        await axios.post(`http://localhost:8000/lists?name=${newList}`);
+        // toggleButtonsAndForms("list");
+        hideCreateListModalHandler();
+        triggerApiFetch();
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      // toggleButtonsAndForms("list");
+      alert(`List "${toProperCase(newList)}" already exists`);
+    }
+  };
+
   return (
     <div className={`flex bg-[#FFFFF3] w-screen h-screen`}>
-      <div className={`relative bg-blue-200 z-0 top-0 left-0 border-2 border-blue-300 flex w-full`}>
+      {/* show/hide create list modal based on state change */}
+      {showCreateListModal ? (
+        <div
+          className={`absolute flex z-10 w-full h-full justify-center items-center`}
+        >
+          <Modal
+            className={`border-dashed border-2 border-yellow-300`}
+            hideFunc={hideCreateListModalHandler}
+            modalTitle={`New Project`}
+          >
+            <CreateListForm
+              handleListCreateSubmit={handleListCreateSubmit}
+              hideFunc={hideCreateListModalHandler}
+            />
+          </Modal>
+        </div>
+      ) : null}
+
+      <div
+        className={`relative bg-blue-200 z-0 top-0 left-0 border-2 border-blue-300 flex w-full`}
+      >
         <div className={`flex flex-col w-2/12 min-w-[250px] h-full bg-white`}>
           <SideMenu
             lists={appData.lists}
             toProperCase={toProperCase}
             displayedList={displayedList}
             handleChangeDisplayedList={handleChangeDisplayedList}
+            showCreateListModalHandler={showCreateListModalHandler}
           />
         </div>
         <div className={`w-10/12`}>

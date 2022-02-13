@@ -67,8 +67,6 @@ const TaskListContainer = ({
     });
     setShowEditFormArr(showEditFormArrCopy);
   };
-  console.log(`showEditFormArr: ${JSON.stringify(showEditFormArr)}`);
-  console.log(`tasks: ${JSON.stringify(tasks)}`);
   return (
     <>
       {showEditFormArr.length === tasks.length ? (
