@@ -1,5 +1,6 @@
 import ListSelect from "./ListSelect/ListSelect";
 import Button from "./ui/Button";
+import Select from "./ui/Select/Select";
 import { useState } from "react";
 
 const listColors = [
@@ -41,7 +42,7 @@ const CreateListForm = ({
 
   return (
     <form
-      className={`w-full p-4 flex flex-col justify-between items-center`}
+      className={`w-full p-4 flex flex-col justify-between items-center h-full `}
       onSubmit={(e) => {
         e.preventDefault();
         handleListCreateSubmit(newList);
@@ -49,35 +50,37 @@ const CreateListForm = ({
       }}
     >
       {/* Inputs */}
-      <div className={`flex flex-col w-4/5 mb-10`}>
-        {/* List Name */}
-        <label htmlFor={`new-list-name`} className={`text-lg`}>
-          Name:
-        </label>
-        <input
-          id={`new-list-name`}
-          type={`text`}
-          className={`font-bold py-2 px-4 my-2 mr-2 rounded-md border-2 border-blue-300`}
-          value={newList}
-          onChange={handleNewListChange}
-          autoFocus
-        />
-        <div className={`rounded-full ${circleColor} h-5 w-5`} />
-        <label htmlFor={`new-list-name`} className={`text-lg`}>
-          Color:
-        </label>
-        <select
-          id={`new-list-name`}
-          className={`font-bold py-2 px-4 my-2 mr-2 rounded-md border-2 border-blue-300`}
+      <div className={`flex flex-col w-11/12 mb-10 h-full `}>
+        <div className={`h-1/5`}>{/* List Name */}
+          <label htmlFor={`new-list-name`} className={`text-lg`}>
+            Name:
+          </label>
+          <input
+            id={`new-list-name`}
+            type={`text`}
+            className={`font-bold py-2 px-4 my-2 mr-2 w-full rounded-sm border-2`}
+            value={newList}
+            onChange={handleNewListChange}
+          /></div>
+        {/*<div className={`rounded-full ${circleColor} h-5 w-5`} />*/}
+        <div className={`h-3/5`}>
+          <label htmlFor={`new-list-name`} className={`text-lg`}>
+            Color:
+          </label>
+          <Select colorList={listColors} />
+        </div>
+        {/*<select*/}
+        {/*  id={`new-list-name`}*/}
+        {/*  className={`font-bold py-2 px-4 my-2 mr-2 rounded-md border-2 border-blue-300`}*/}
 
-          onChange={handleNewListChange}
-        >
-          {listColors.map(color => {
-            return <option onMouseEnter={() => handleCircleColorChange(color.hex)}>
-              {color.name}
-            </option>;
-          })}
-        </select>
+        {/*  onChange={handleNewListChange}*/}
+        {/*>*/}
+        {/*  {listColors.map(color => {*/}
+        {/*    return <option onMouseEnter={() => handleCircleColorChange(color.hex)}>*/}
+        {/*      {color.name}*/}
+        {/*    </option>;*/}
+        {/*  })}*/}
+        {/*</select>*/}
         <hr />
         {/* Buttons */}
         <div className={`flex  items-center mt-4 justify-center`}>

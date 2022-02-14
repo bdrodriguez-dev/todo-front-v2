@@ -2,7 +2,7 @@ import { XIcon } from '@heroicons/react/solid';
 
 const Modal = ({ className, hideFunc, submitFunc, children, modalTitle }) => {
   return (
-    <div className={`h-4/6 w-2/6 bg-white shadow-md rounded-md `}>
+    <div className={`h-4/6 w-5/12 bg-white shadow-md rounded-md `}>
       <div className={`w-full flex justify-end bg-blue-50`}>
         <div className={`flex items-center w-full p-2`}>
           <h3 className={`text-lg font-semibold`}>{modalTitle}</h3>
