@@ -52,7 +52,7 @@ const TaskAppContainer = () => {
 
   const handleDeleteList = async (id) => {
     const listToDelete = appData.lists.find((list) => list._id === id);
-    if (listToDelete.name !== "inbox") {
+    // if (listToDelete.name !== "inbox") {
       try {
         const deletedList = await axios.delete(
           `http://localhost:8000/lists/${id}`
@@ -62,9 +62,9 @@ const TaskAppContainer = () => {
       } catch (error) {
         console.log(error);
       }
-    } else {
-      alert(`Cannot delete "Inbox" list`);
-    }
+    // } else {
+    //   alert(`Cannot delete "Inbox" list`);
+    // }
   };
 
   const handleChangeDisplayedList = (list) => {
@@ -90,7 +90,8 @@ const TaskAppContainer = () => {
     setShowCreateListModal(true);
   };
 
-  const handleListCreateSubmit = async (newList) => {
+  const handleListCreateSubmit = async (listName, listColor) => {
+    console.log(`submitted input: ${listName}, ${listColor}`)
     const checkForExistingList = (newList) => {
       let appearsInList = false;
       appData.lists.forEach((list) => {
@@ -101,10 +102,16 @@ const TaskAppContainer = () => {
       });
       return appearsInList;
     };
-    if (newList !== "" && !checkForExistingList(newList)) {
+
+    const hashRemovedColor = listColor.slice(1);
+
+    if (listName !== "" && !checkForExistingList(listName)) {
       try {
-        await axios.post(`http://localhost:8000/lists?name=${newList}`);
-        // toggleButtonsAndForms("list");
+        const urlString = `http://localhost:8000/lists?name=${listName}&color=%23${hashRemovedColor}`;
+        console.log(urlString);
+        const res = await axios.post(urlString);
+        console.log(res);
+
         hideCreateListModalHandler();
         triggerApiFetch();
       } catch (error) {
@@ -112,7 +119,7 @@ const TaskAppContainer = () => {
       }
     } else {
       // toggleButtonsAndForms("list");
-      alert(`List "${toProperCase(newList)}" already exists`);
+      alert(`List "${toProperCase(listName)}" already exists`);
     }
   };
 
@@ -146,6 +153,7 @@ const TaskAppContainer = () => {
             displayedList={displayedList}
             handleChangeDisplayedList={handleChangeDisplayedList}
             showCreateListModalHandler={showCreateListModalHandler}
+            handleDeleteList={handleDeleteList}
           />
         </div>
         <div className={`w-10/12`}>

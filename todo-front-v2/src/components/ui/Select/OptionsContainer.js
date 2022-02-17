@@ -1,12 +1,29 @@
-const OptionsContainer = ({ children }) => {
+import Option from "./Option/Option";
 
+const OptionsContainer = ({
+  colorList,
+  handleCircleColorChange,
+  selectedColor,
+}) => {
   return (
-    <ul className={`overflow-auto rounded-sm h-4/5 border-2`}>
-      <li>{children[0]}</li>
-      {children.map((child) => {
-        return <li>{child}</li>;
-      })}
-    </ul>
+    <div className={`h-full`}>
+      <div className={`border-2 rounded-md`}>
+        <Option
+          colorName={selectedColor.name}
+          circleColor={selectedColor.hex}
+        />
+      </div>
+
+      <ul className={`overflow-auto rounded-md border-2 h-4/5`}>
+        {colorList.map((color) => {
+          return (
+            <li key={color.name} onClick={() => handleCircleColorChange(color)}>
+              <Option colorName={color.name} circleColor={color.hex} />
+            </li>
+          );
+        })}
+      </ul>
+    </div>
   );
 };
 

@@ -2,6 +2,7 @@ import { DotsHorizontalIcon } from "@heroicons/react/solid";
 import { PlusIcon } from "@heroicons/react/solid";
 import Modal from "../Modal";
 import { useEffect, useState } from "react";
+import ColoredListCircle from "../ui/Select/Option/ColoredListCircle";
 
 const SideMenu = ({
   lists,
@@ -9,6 +10,7 @@ const SideMenu = ({
   handleChangeDisplayedList,
   displayedList,
   showCreateListModalHandler,
+  handleDeleteList,
 }) => {
   const [showListEditModalArr, setShowListEditModalArr] = useState([]);
 
@@ -75,6 +77,7 @@ const SideMenu = ({
                     className={`text-left whitespace-nowrap overflow-hidden text-ellipsis w-8/12`}
                     onClick={() => handleChangeDisplayedList(list.name)}
                   >
+                    <ColoredListCircle hex={list.color} />
                     {toProperCase(list.name)}
                   </button>
 
@@ -86,8 +89,11 @@ const SideMenu = ({
                     <div
                       className={`absolute flex z-10 w-96 h-96 justify-center items-center bg-white shadow-md rounded-md border-dashed border-2 border-red-300`}
                     >
-                      <Modal hideFunc={() => hideListEditModal(list._id)}>
+                      <Modal
+                        hideFunc={() => hideListEditModal(list._id)}
+                      >
                         <p>Edit List Modal</p>
+                        <button onClick={() => handleDeleteList(list._id)}>Delete</button>
                       </Modal>
                     </div>
                   )}

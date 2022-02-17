@@ -1,20 +1,15 @@
 import SelectIcon from "./SelectIcon";
-import OptionsContainer from './OptionsContainer';
-import Option from './Option/Option';
+import OptionsContainer from "./OptionsContainer";
+import Option from "./Option/Option";
 
-const Select = ({ colorList }) => {
-  console.log(colorList);
+const Select = ({ colorList, handleCircleColorChange, selectedColor }) => {
   return (
     <div className={`h-full`}>
-      {/*<div>*/}
-      {/*  <SelectIcon />*/}
-      {/*</div>*/}
-
-        <OptionsContainer>
-          {colorList.map((color) => {
-            return <Option colorName={color.name} circleColor={color.hex} />;
-          })}
-        </OptionsContainer>
+      <OptionsContainer
+        handleCircleColorChange={handleCircleColorChange}
+        selectedColor={selectedColor}
+        colorList={colorList}
+      />
     </div>
   );
 };
