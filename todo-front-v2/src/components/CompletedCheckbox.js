@@ -18,7 +18,7 @@ const CompletedCheckbox = ({ taskObj, handleCompletedChange}) => {
   return (
     <form>
       <input
-        className={`w-[25px] h-[25px] `}
+        className={`w-[25px] h-[25px]`}
         type={`checkbox`}
         checked={taskObj.completed}
         onChange={() => {

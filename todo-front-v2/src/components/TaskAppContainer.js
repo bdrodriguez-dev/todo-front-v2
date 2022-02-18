@@ -5,6 +5,7 @@ import CreateContainer from "./CreateContainer";
 import SideMenu from "./ListSelect/SideMenu";
 import Modal from "./Modal";
 import CreateListForm from "./CreateListForm";
+import EditListForm from './EditListForm';
 
 const TaskAppContainer = () => {
   const [appData, setAppData] = useState({
@@ -14,6 +15,7 @@ const TaskAppContainer = () => {
   const [fetchFromApiFlag, setFetchFromApiFlag] = useState(false);
   const [displayedList, setDisplayedList] = useState("inbox");
   const [showCreateListModal, setShowCreateListModal] = useState(false);
+  const [showEditListModal, setShowEditListModal] = useState(false);
 
   const modalRef = useRef(null);
 
@@ -93,6 +95,14 @@ const TaskAppContainer = () => {
     setShowCreateListModal(true);
   };
 
+  const hideEditListModalHandler = () => {
+    setShowEditListModal(false);
+  };
+
+  const showEditListModalHandler = () => {
+    setShowEditListModal(true);
+  };
+
   const handleListCreateSubmit = async (listName, listColor) => {
     console.log(`submitted input: ${listName}, ${listColor}`)
     const checkForExistingList = (newList) => {
@@ -153,6 +163,23 @@ const TaskAppContainer = () => {
         </div>
       ) : null}
 
+      {showEditListModal ? (
+        <div
+          className={`absolute flex z-10 w-full h-full justify-center items-center`}
+        >
+          <Modal
+            hideFunc={hideEditListModalHandler}
+            modalTitle={`Edit Project`}
+            autoFocusModal={autoFocusModal}
+            modalRef={modalRef}
+          >
+            <EditListForm />
+          </Modal>
+        </div>
+      ) : null}
+
+
+
       <div
         className={`relative bg-blue-200 z-0 top-0 left-0 border-2 border-blue-300 flex w-full`}
       >
@@ -164,6 +191,7 @@ const TaskAppContainer = () => {
             handleChangeDisplayedList={handleChangeDisplayedList}
             showCreateListModalHandler={showCreateListModalHandler}
             handleDeleteList={handleDeleteList}
+            showEditListModal={showEditListModalHandler}
           />
         </div>
         <div className={`w-10/12`}>
