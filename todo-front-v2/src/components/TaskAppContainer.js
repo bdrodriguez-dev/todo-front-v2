@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from 'react';
 import axios from "axios";
 import TaskListContainer from "./TaskListContainer";
 import CreateContainer from "./CreateContainer";
@@ -14,6 +14,9 @@ const TaskAppContainer = () => {
   const [fetchFromApiFlag, setFetchFromApiFlag] = useState(false);
   const [displayedList, setDisplayedList] = useState("inbox");
   const [showCreateListModal, setShowCreateListModal] = useState(false);
+
+  const modalRef = useRef(null);
+
 
   // Get tasks from db and update state
   useEffect(() => {
@@ -123,6 +126,11 @@ const TaskAppContainer = () => {
     }
   };
 
+  const autoFocusModal = () => {
+    modalRef.current.focus();
+  }
+
+
   return (
     <div className={`flex bg-[#FFFFF3] w-screen h-screen`}>
       {/* show/hide create list modal based on state change */}
@@ -134,6 +142,8 @@ const TaskAppContainer = () => {
             className={`border-dashed border-2 border-yellow-300`}
             hideFunc={hideCreateListModalHandler}
             modalTitle={`New Project`}
+            autoFocusModal={autoFocusModal}
+            modalRef={modalRef}
           >
             <CreateListForm
               handleListCreateSubmit={handleListCreateSubmit}

@@ -69,16 +69,16 @@ const SideMenu = ({
               return (
                 <li
                   className={`w-full my-2 flex justify-between p-2 rounded-md ${
-                    displayedList === list.name ? "bg-slate-400" : null
+                    displayedList === list.name ? "bg-slate-200" : null
                   } `}
                   key={list._id}
                 >
                   <button
-                    className={`text-left whitespace-nowrap overflow-hidden text-ellipsis w-8/12`}
+                    className={`text-left whitespace-nowrap overflow-hidden text-ellipsis w-8/12 flex items-center`}
                     onClick={() => handleChangeDisplayedList(list.name)}
                   >
                     <ColoredListCircle hex={list.color} />
-                    {toProperCase(list.name)}
+                    <p className={`ml-4`}>{toProperCase(list.name)}</p>
                   </button>
 
                   {!showListEditModalBool ? (
