@@ -27,14 +27,14 @@ const CreateTaskForm = ({
 
   return (
     <form
-      className={`w-full p-4 flex flex-col justify-between`}
+      className={`w-full p-4 flex flex-col justify-between bg-white w-11/12 ml-6`}
       onSubmit={(e) => {
         e.preventDefault();
         handleTaskCreateSubmit(taskDescription, dueDate, selectedList);
       }}
     >
       {/* Inputs */}
-      <div className={`flex flex-col w-4/5 mb-10`}>
+      <div className={`flex flex-col w-full mb-10`}>
         {/* Task description */}
         <input
           type={`text`}
@@ -47,7 +47,7 @@ const CreateTaskForm = ({
           {/* Task dueDate*/}
           <input
             type={`date`}
-            className={`font-bold py-2 px-2 my-2 mr-2 rounded-md w-4/12 border-2 border-blue-300`}
+            className={`font-bold py-2 px-2 my-2 mr-2 rounded-md w-6/12 border-2 border-blue-300`}
             value={dueDate}
             onChange={handleDueDateChange}
           />
@@ -64,12 +64,6 @@ const CreateTaskForm = ({
       {/* Buttons */}
       <div className={`flex justify-center items-center mt-4`}>
         <Button type={`submit`} buttonText={`Save`} variant={`primary`} />
-        <Button
-          type={`button`}
-          buttonText={`Cancel`}
-          variant={`neutral`}
-          onClick={hideTaskCreateForm}
-        />
       </div>
     </form>
   );

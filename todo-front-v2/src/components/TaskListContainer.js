@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import axios from "axios";
 import TaskList from "./TaskList";
 import SideMenu from "./ListSelect/SideMenu";
+import CreateTaskForm from "./CreateTaskForm";
+import Button from "./ui/Button";
 
 const TaskListContainer = ({
   tasks,
@@ -10,6 +12,7 @@ const TaskListContainer = ({
   handleCompletedChange,
   triggerApiFetch,
   displayedList,
+  handleShowCreateTask,
 }) => {
   const [showEditFormArr, setShowEditFormArr] = useState([]);
 
@@ -67,10 +70,22 @@ const TaskListContainer = ({
     });
     setShowEditFormArr(showEditFormArrCopy);
   };
+
   return (
-    <>
+    <div className={`mt-16`}>
+      <h2 className={`ml-6 text-4xl font-bold`}>
+        {toProperCase(displayedList)}
+      </h2>
+      <Button
+        buttonText={`Add task`}
+        onClick={handleShowCreateTask}
+        type={`button`}
+        variant={`primary`}
+        className={`ml-6 mt-2`}
+      />
       {showEditFormArr.length === tasks.length ? (
         <TaskList
+          displayedList={displayedList}
           tasks={tasks}
           showEditFormArr={showEditFormArr}
           handleDelete={handleDelete}
@@ -83,7 +98,7 @@ const TaskListContainer = ({
           triggerApiFetch={triggerApiFetch}
         />
       ) : null}
-    </>
+    </div>
   );
 };
 

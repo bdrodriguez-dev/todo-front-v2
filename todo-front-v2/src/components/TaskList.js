@@ -1,5 +1,7 @@
 import TaskCard from "./TaskCard";
 import TaskItem from "./TaskItem";
+import Button from "./ui/Button";
+import CreateTaskForm from "./CreateTaskForm";
 
 const TaskList = ({
   tasks,
@@ -12,15 +14,17 @@ const TaskList = ({
   lists,
   handleCompletedChange,
   triggerApiFetch,
+  displayedList,
+  handleHideCreate,
+  handleShowCreate,
+  showCreateForm,
 }) => {
   return (
-    <>
-      <ul className={`my-16 w-11/12 flex flex-col items-center`}>
+      <ul className={`mt-20 w-11/12 flex flex-col items-center`}>
         {tasks.map((taskObj) => {
           const showEditFormBool = showEditFormArr.find((showEditFormObj) => {
             return taskObj._id === showEditFormObj.id;
           }).showEditForm;
-
           return (
             <li key={taskObj._id} className={`w-full`}>
               <TaskCard>
@@ -50,7 +54,6 @@ const TaskList = ({
           );
         })}
       </ul>
-    </>
   );
 };
 

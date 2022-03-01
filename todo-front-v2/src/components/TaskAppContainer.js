@@ -1,11 +1,11 @@
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef, useState } from "react";
 import axios from "axios";
 import TaskListContainer from "./TaskListContainer";
-import CreateContainer from "./CreateContainer";
 import SideMenu from "./ListSelect/SideMenu";
 import Modal from "./Modal";
 import CreateListForm from "./CreateListForm";
-import EditListForm from './EditListForm';
+import EditListForm from "./EditListForm";
+import CreateTaskForm from "./CreateTaskForm";
 
 const TaskAppContainer = () => {
   const [appData, setAppData] = useState({
@@ -16,9 +16,9 @@ const TaskAppContainer = () => {
   const [displayedList, setDisplayedList] = useState("inbox");
   const [showCreateListModal, setShowCreateListModal] = useState(false);
   const [showEditListModal, setShowEditListModal] = useState(false);
+  const [showCreateTaskModal, setShowCreateTaskModal] = useState(false);
 
   const modalRef = useRef(null);
-
 
   // Get tasks from db and update state
   useEffect(() => {
@@ -58,15 +58,15 @@ const TaskAppContainer = () => {
   const handleDeleteList = async (id) => {
     const listToDelete = appData.lists.find((list) => list._id === id);
     // if (listToDelete.name !== "inbox") {
-      try {
-        const deletedList = await axios.delete(
-          `http://localhost:8000/lists/${id}`
-        );
-        console.log(deletedList);
-        triggerApiFetch();
-      } catch (error) {
-        console.log(error);
-      }
+    try {
+      const deletedList = await axios.delete(
+        `http://localhost:8000/lists/${id}`
+      );
+      console.log(deletedList);
+      triggerApiFetch();
+    } catch (error) {
+      console.log(error);
+    }
     // } else {
     //   alert(`Cannot delete "Inbox" list`);
     // }
@@ -74,7 +74,6 @@ const TaskAppContainer = () => {
 
   const handleChangeDisplayedList = (list) => {
     setDisplayedList(list);
-    console.log(list);
   };
 
   const triggerApiFetch = () => {
@@ -104,7 +103,6 @@ const TaskAppContainer = () => {
   };
 
   const handleListCreateSubmit = async (listName, listColor) => {
-    console.log(`submitted input: ${listName}, ${listColor}`)
     const checkForExistingList = (newList) => {
       let appearsInList = false;
       appData.lists.forEach((list) => {
@@ -121,9 +119,7 @@ const TaskAppContainer = () => {
     if (listName !== "" && !checkForExistingList(listName)) {
       try {
         const urlString = `http://localhost:8000/lists?name=${listName}&color=%23${hashRemovedColor}`;
-        console.log(urlString);
         const res = await axios.post(urlString);
-        console.log(res);
 
         hideCreateListModalHandler();
         triggerApiFetch();
@@ -138,12 +134,34 @@ const TaskAppContainer = () => {
 
   const autoFocusModal = () => {
     modalRef.current.focus();
-  }
+  };
 
+  const handleShowCreateTask = () => {
+    setShowCreateTaskModal(true);
+  };
+
+  const handleHideCreateTask = () => {
+    setShowCreateTaskModal(false);
+  };
+
+  const handleTaskCreateSubmit = async (
+    taskDescription,
+    dueDate,
+    selectedList
+  ) => {
+    try {
+      await axios.post(
+        `http://localhost:8000/todos?todo=${taskDescription}&dueDate=${dueDate}&list=${selectedList}`
+      );
+      handleHideCreateTask();
+      triggerApiFetch();
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   return (
     <div className={`flex bg-[#FFFFF3] w-screen h-screen`}>
-      {/* show/hide create list modal based on state change */}
       {showCreateListModal ? (
         <div
           className={`absolute flex z-10 w-full h-full justify-center items-center`}
@@ -178,11 +196,26 @@ const TaskAppContainer = () => {
         </div>
       ) : null}
 
+      {showCreateTaskModal ? (
+        <div
+          className={`absolute flex z-10 w-full h-full justify-center items-center`}
+        >
+          <Modal
+            hideFunc={handleHideCreateTask}
+            modalTitle={`Create Task`}
+            autoFocusModal={autoFocusModal}
+            modalRef={modalRef}
+          >
+            <CreateTaskForm
+              handleTaskCreateSubmit={handleTaskCreateSubmit}
+              toProperCase={toProperCase}
+              lists={appData.lists}
+            />
+          </Modal>
+        </div>
+      ) : null}
 
-
-      <div
-        className={`relative bg-blue-200 z-0 top-0 left-0 border-2 border-blue-300 flex w-full`}
-      >
+      <div className={`relative bg-blue-200 z-0 top-0 left-0 flex w-full`}>
         <div className={`flex flex-col w-2/12 min-w-[250px] h-full bg-white`}>
           <SideMenu
             lists={appData.lists}
@@ -205,14 +238,10 @@ const TaskAppContainer = () => {
             triggerApiFetch={triggerApiFetch}
             displayedList={displayedList}
             handleChangeDisplayedList={handleChangeDisplayedList}
+            handleShowCreateTask={handleShowCreateTask}
           />
         </div>
       </div>
-      {/*<CreateContainer*/}
-      {/*  toProperCase={toProperCase}*/}
-      {/*  lists={appData.lists}*/}
-      {/*  triggerApiFetch={triggerApiFetch}*/}
-      {/*/>*/}
     </div>
   );
 };
