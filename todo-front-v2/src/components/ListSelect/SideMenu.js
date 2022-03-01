@@ -53,9 +53,9 @@ const SideMenu = ({
         <h2 className={`text-xl`}>Array of Zero</h2>
       </div>
       <div className={`flex flex-col mt-28 mx-4`}>
-        <div className={`mb-2 flex justify-between items-center p-2`}>
+        <div className={`mb-2 flex justify-between items-center`}>
           <h3 className={`text-lg font-semibold`}>Projects</h3>
-          <button onClick={showCreateListModalHandler}>
+          <button className={`hover:bg-slate-200 p-2 rounded-md`} onClick={showCreateListModalHandler}>
             <PlusIcon className={`h-5 w-5 text-blue-500`} />
           </button>
         </div>
@@ -69,7 +69,7 @@ const SideMenu = ({
             // ).showListEditModal;
             return (
               <li
-                className={`w-full my-2 flex justify-between p-2 rounded-md ${
+                className={`hover:bg-slate-200  w-full my-2 flex justify-between p-2 rounded-md ${
                   displayedList === list.name ? "bg-slate-200" : null
                 } `}
                 key={list._id}
