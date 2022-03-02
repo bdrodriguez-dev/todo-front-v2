@@ -7,6 +7,27 @@ import CreateListForm from "./CreateListForm";
 import EditListForm from "./EditListForm";
 import CreateTaskForm from "./CreateTaskForm";
 
+const listColors = [
+  { name: "Berry Red", hex: "#B8255F" },
+  { name: "Red", hex: "#DB4035" },
+  { name: "Orange", hex: "#FF9933" },
+  { name: "Yellow", hex: "#FAD000" },
+  { name: "Olive Green", hex: "#AFB83B" },
+  { name: "Lime Green", hex: "#7ECC49" },
+  { name: "Green", hex: "#299438" },
+  { name: "Mint Green", hex: "#6ACCBC" },
+  { name: "Teal", hex: "#158FAD" },
+  { name: "Light Blue", hex: "#96C3EB" },
+  { name: "Blue", hex: "#4073FF" },
+  { name: "Grape", hex: "#884DFF" },
+  { name: "Violet", hex: "#AF38EB" },
+  { name: "Lavender", hex: "#EB96EB" },
+  { name: "Magenta", hex: "#E05194" },
+  { name: "Salmon", hex: "#FF8D85" },
+  { name: "Charcoal", hex: "#808080" },
+  { name: "Grey", hex: "#B8B8B8" },
+];
+
 const TaskAppContainer = () => {
   const [appData, setAppData] = useState({
     tasks: [],
@@ -17,6 +38,7 @@ const TaskAppContainer = () => {
   const [showCreateListModal, setShowCreateListModal] = useState(false);
   const [showEditListModal, setShowEditListModal] = useState(false);
   const [showCreateTaskModal, setShowCreateTaskModal] = useState(false);
+  const [editListId, setEditListId] = useState("");
 
   const modalRef = useRef(null);
 
@@ -132,6 +154,36 @@ const TaskAppContainer = () => {
     }
   };
 
+  const handleListEditSubmit = async (initialListName, listName, listColor) => {
+    const checkForExistingList = (newList) => {
+      let appearsInList = false;
+      appData.lists.forEach((list) => {
+        if (list.name === newList && list.name !== initialListName) {
+          appearsInList = true;
+          return appearsInList;
+        }
+      });
+      return appearsInList;
+    };
+
+    const hashRemovedColor = listColor.slice(1);
+
+    if (listName !== "" && !checkForExistingList(listName)) {
+      try {
+        const urlString = `http://localhost:8000/lists?name=${listName}&color=%23${hashRemovedColor}`;
+        const res = await axios.put(urlString);
+
+        hideCreateListModalHandler();
+        triggerApiFetch();
+      } catch (error) {
+        console.log(error);
+      }
+    } else {
+      // toggleButtonsAndForms("list");
+      alert(`List "${toProperCase(listName)}" already exists`);
+    }
+  };
+
   const autoFocusModal = () => {
     modalRef.current.focus();
   };
@@ -160,6 +212,24 @@ const TaskAppContainer = () => {
     }
   };
 
+  const handleSetEditListId = (id) => {
+    setEditListId(id);
+  };
+
+  const getListObjById = (id) => {
+    const i = appData.lists.findIndex((list) => {
+      return id === list._id;
+    });
+
+    return appData.lists[i];
+  };
+
+  const getHexObject = (hex) => {
+    return listColors.filter((color) => {
+      return color.hex === hex;
+    });
+  };
+
   return (
     <div className={`flex bg-[#FFFFF3] w-screen h-screen`}>
       {showCreateListModal ? (
@@ -176,6 +246,8 @@ const TaskAppContainer = () => {
             <CreateListForm
               handleListCreateSubmit={handleListCreateSubmit}
               hideFunc={hideCreateListModalHandler}
+              listColors={listColors}
+              // submitFunc={handleListCreateSubmit}
             />
           </Modal>
         </div>
@@ -191,7 +263,12 @@ const TaskAppContainer = () => {
             autoFocusModal={autoFocusModal}
             modalRef={modalRef}
           >
-            <EditListForm />
+            <EditListForm
+              listObj={getListObjById(editListId)}
+              listColorObj={getHexObject(getListObjById(editListId).color)[0]}
+              listColors={listColors}
+              submitFunc={handleListEditSubmit}
+            />
           </Modal>
         </div>
       ) : null}
@@ -225,6 +302,7 @@ const TaskAppContainer = () => {
             showCreateListModalHandler={showCreateListModalHandler}
             handleDeleteList={handleDeleteList}
             showEditListModal={showEditListModalHandler}
+            handleSetEditListId={handleSetEditListId}
           />
         </div>
         <div className={`w-10/12`}>

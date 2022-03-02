@@ -12,6 +12,7 @@ const SideMenu = ({
   showCreateListModalHandler,
   handleDeleteList,
   showEditListModal,
+  handleSetEditListId,
 }) => {
   const [showListEditModalArr, setShowListEditModalArr] = useState([]);
 
@@ -49,7 +50,12 @@ const SideMenu = ({
                 </button>
 
                 {/*{!showListEditModalBool ? (*/}
-                <button onClick={() => showEditListModal(list._id)}>
+                <button
+                  onClick={() => {
+                    handleSetEditListId(list._id)
+                    showEditListModal();
+                  }}
+                >
                   <DotsHorizontalIcon className={`h-5 w-5 text-blue-500`} />
                 </button>
               </li>

@@ -29,7 +29,7 @@ const EditTask = ({
 
   return (
     <form
-      className={`w-full p-4 flex-col justify-between bg-green-200`}
+      className={`w-full p-4 flex-col justify-between bg-green-200 rounded-md`}
       onSubmit={(e) => {
         e.preventDefault();
         handleEditSubmit(taskDescription, dueDate, selectedList, id);
@@ -48,7 +48,7 @@ const EditTask = ({
         />
         <input
           type={`date`}
-          className={`font-bold p-2 my-2 rounded-md w-3/12 border-2 border-blue-300 focus:outline-0`}
+          className={`font-bold p-2 my-2 rounded-md w-5/12 border-2 border-blue-300 focus:outline-0`}
           value={dueDate}
           onChange={handleDueDateChange}
         />

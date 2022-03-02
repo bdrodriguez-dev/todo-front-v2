@@ -3,31 +3,11 @@ import Button from "./ui/Button";
 import Select from "./ui/Select/Select";
 import { useState } from "react";
 
-const listColors = [
-  { name: "Berry Red", hex: "#B8255F" },
-  { name: "Red", hex: "#DB4035" },
-  { name: "Orange", hex: "#FF9933" },
-  { name: "Yellow", hex: "#FAD000" },
-  { name: "Olive Green", hex: "#AFB83B" },
-  { name: "Lime Green", hex: "#7ECC49" },
-  { name: "Green", hex: "#299438" },
-  { name: "Mint Green", hex: "#6ACCBC" },
-  { name: "Teal", hex: "#158FAD" },
-  { name: "Light Blue", hex: "#96C3EB" },
-  { name: "Blue", hex: "#4073FF" },
-  { name: "Grape", hex: "#884DFF" },
-  { name: "Violet", hex: "#AF38EB" },
-  { name: "Lavender", hex: "#EB96EB" },
-  { name: "Magenta", hex: "#E05194" },
-  { name: "Salmon", hex: "#FF8D85" },
-  { name: "Charcoal", hex: "#808080" },
-  { name: "Grey", hex: "#B8B8B8" },
-];
-
 const CreateListForm = ({
   hideListCreateForm,
   handleListCreateSubmit,
   hideFunc,
+  listColors,
 }) => {
   const [newList, setNewList] = useState({
     name: "",
@@ -80,18 +60,7 @@ const CreateListForm = ({
             handleCircleColorChange={handleNewListColorChange}
           />
         </div>
-        {/*<select*/}
-        {/*  id={`new-list-name`}*/}
-        {/*  className={`font-bold py-2 px-4 my-2 mr-2 rounded-md border-2 border-blue-300`}*/}
 
-        {/*  onChange={handleNewListChange}*/}
-        {/*>*/}
-        {/*  {listColors.map(color => {*/}
-        {/*    return <option onMouseEnter={() => handleCircleColorChange(color.hex)}>*/}
-        {/*      {color.name}*/}
-        {/*    </option>;*/}
-        {/*  })}*/}
-        {/*</select>*/}
         <hr />
         {/* Buttons */}
         <div className={`flex  items-center mt-4 justify-center`}>
