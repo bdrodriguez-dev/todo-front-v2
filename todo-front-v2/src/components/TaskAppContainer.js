@@ -85,6 +85,7 @@ const TaskAppContainer = () => {
         `http://localhost:8000/lists/${id}`
       );
       console.log(deletedList);
+      hideEditListModalHandler();
       triggerApiFetch();
     } catch (error) {
       console.log(error);
@@ -168,20 +169,40 @@ const TaskAppContainer = () => {
 
     const hashRemovedColor = listColor.slice(1);
 
-    if (listName !== "" && !checkForExistingList(listName)) {
-      try {
-        const urlString = `http://localhost:8000/lists?name=${listName}&color=%23${hashRemovedColor}`;
-        const res = await axios.put(urlString);
-
-        hideCreateListModalHandler();
-        triggerApiFetch();
-      } catch (error) {
-        console.log(error);
-      }
-    } else {
-      // toggleButtonsAndForms("list");
-      alert(`List "${toProperCase(listName)}" already exists`);
+    if (listName === "") {
+      alert("List name cannot be blank");
+      return;
     }
+
+    if (checkForExistingList(listName)) {
+      alert(`List "${toProperCase(listName)}" already exists`);
+      return;
+    }
+
+    try {
+      const urlString = `http://localhost:8000/lists/${editListId}?name=${listName}&color=%23${hashRemovedColor}`;
+      const res = await axios.put(urlString);
+
+      hideEditListModalHandler();
+      triggerApiFetch();
+    } catch (error) {
+      console.log(error);
+    }
+
+    // if (listName !== "" && !checkForExistingList(listName)) {
+    //   try {
+    //     const urlString = `http://localhost:8000/lists/${editListId}?name=${listName}&color=%23${hashRemovedColor}`;
+    //     const res = await axios.put(urlString);
+    //
+    //     hideCreateListModalHandler();
+    //     triggerApiFetch();
+    //   } catch (error) {
+    //     console.log(error);
+    //   }
+    // } else {
+    //   // toggleButtonsAndForms("list");
+    //   alert(`List "${toProperCase(listName)}" already exists`);
+    // }
   };
 
   const autoFocusModal = () => {
@@ -230,14 +251,23 @@ const TaskAppContainer = () => {
     });
   };
 
+  const isModal = () => {
+    let isModalBool = false;
+    if (showCreateTaskModal || showEditListModal || showCreateListModal) {
+      isModalBool = true;
+    }
+
+    return isModalBool;
+  }
+
   return (
-    <div className={`flex bg-[#FFFFF3] w-screen h-screen`}>
+    <div className={`flex bg-[#FFFFF3] w-screen h-screen overflow-hidden`}>
       {showCreateListModal ? (
         <div
           className={`absolute flex z-10 w-full h-full justify-center items-center`}
         >
           <Modal
-            className={`border-dashed border-2 border-yellow-300`}
+            className={``}
             hideFunc={hideCreateListModalHandler}
             modalTitle={`New Project`}
             autoFocusModal={autoFocusModal}
@@ -268,6 +298,8 @@ const TaskAppContainer = () => {
               listColorObj={getHexObject(getListObjById(editListId).color)[0]}
               listColors={listColors}
               submitFunc={handleListEditSubmit}
+              deleteFunc={handleDeleteList}
+              toProperCase={toProperCase}
             />
           </Modal>
         </div>
@@ -292,7 +324,7 @@ const TaskAppContainer = () => {
         </div>
       ) : null}
 
-      <div className={`relative bg-blue-200 z-0 top-0 left-0 flex w-full`}>
+      <div className={`${isModal() ? `opacity-50` : null} relative bg-blue-200 z-0 top-0 left-0 flex w-full h-full`}>
         <div className={`flex flex-col w-2/12 min-w-[250px] h-full bg-white`}>
           <SideMenu
             lists={appData.lists}
@@ -305,7 +337,7 @@ const TaskAppContainer = () => {
             handleSetEditListId={handleSetEditListId}
           />
         </div>
-        <div className={`w-10/12`}>
+        <div className={`w-10/12 h-full`}>
           <TaskListContainer
             tasks={getTasksForDisplayedList(displayedList)}
             deleteFlag={fetchFromApiFlag}

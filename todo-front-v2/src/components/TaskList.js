@@ -20,7 +20,7 @@ const TaskList = ({
   showCreateForm,
 }) => {
   return (
-      <ul className={`mt-20 w-11/12 flex flex-col items-center`}>
+      <ul className={`mt-20 w-11/12 h-[700px] flex flex-col items-center overflow-auto`}>
         {tasks.map((taskObj) => {
           const showEditFormBool = showEditFormArr.find((showEditFormObj) => {
             return taskObj._id === showEditFormObj.id;

@@ -72,7 +72,7 @@ const TaskListContainer = ({
   };
 
   return (
-    <div className={`mt-16`}>
+    <div className={`mt-16 h-4/5`}>
       <h2 className={`ml-6 text-4xl font-bold`}>
         {toProperCase(displayedList)}
       </h2>

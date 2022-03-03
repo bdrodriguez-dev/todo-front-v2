@@ -2,7 +2,7 @@ import Select from "./ui/Select/Select";
 import Button from "./ui/Button";
 import { useState } from "react";
 
-const EditListForm = ({ listObj, listColors, listColorObj, submitFunc }) => {
+const EditListForm = ({ listObj, listColors, listColorObj, submitFunc, deleteFunc, toProperCase }) => {
   const [initialListName, setInitialListName] = useState(listObj.name);
   const [listName, setListName] = useState(listObj.name);
   const [listColor, setListColor] = useState(listColorObj);
@@ -43,7 +43,7 @@ console.log(listColorObj)
             id={`new-list-name`}
             type={`text`}
             className={`font-bold py-2 px-4 my-2 mr-2 w-full rounded-sm border-2`}
-            value={listName}
+            value={toProperCase(listName)}
             onChange={handleListNameChange}
           />
         </div>
@@ -62,6 +62,7 @@ console.log(listColorObj)
         {/* Buttons */}
         <div className={`flex  items-center mt-4 justify-center`}>
           <Button type={`submit`} buttonText={`Save`} variant={`primary`} />
+          <Button type={'button'} buttonText={`Delete`} variant={`danger`} onClick={() => deleteFunc(listObj._id)} />
         </div>
       </div>
     </form>
